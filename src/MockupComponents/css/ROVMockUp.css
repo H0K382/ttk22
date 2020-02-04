@@ -1,0 +1,23 @@
+.mockupBox {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.startServer {
+  background-color: var(--primary-dark);
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  font-size: x-large;
+  padding: 15px;
+}
+
+input[type='modeInput'] {
+  padding: 10px;
+  font-size: medium;
+}
+
+.recievedData {
+  color: black;
+}

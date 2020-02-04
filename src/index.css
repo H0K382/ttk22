@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+html,
+body,
+#root,
+#root > div {
+  height: 100%;
+}
+
+/* Global css-variables - can and should be used when coloring/shadowing anything */
+:root {
+  --primary-dark: #003d65;
+  --primary-normal: #96adc8;
+  --primary-light: #4381c1;
+
+  --secondary-dark: #b0003a;
+  --secondary-normal: #e91e63;
+  --secondary-light: #ff6090;
+
+  --positive-normal: #3eb539;
+  --positive-dark: #087f23;
+  --positive-light: #14d596;
+
+  --negative-normal: #f62d1d;
+  --negative-dark: #8e0000;
+  --negative-light: #ff5f52;
+
+  --shadow-primary: 0 0 2px 1px black;
+  --shadow-secondary: 0 0 1.5px 0.5px black;
+  --shadow-big: 0 0 4px 1px black;
+
+  --big-radius: 5px;
+  --small-radius: 2px;
+
+  --button-active-shadow: 0 0 1px 1px var(--primary-dark);
+  color: white;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: var(--small-radius);
+}

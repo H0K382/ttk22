@@ -1,0 +1,33 @@
+.Title {
+  font-size: 15px;
+  font-weight: 500;
+  padding: 5px;
+  background-color: var(--primary-dark);
+  text-align: center;
+  border-radius: inherit;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.smallTitle {
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.availableMark {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 100px;
+  top: 1px;
+  right: 1px;
+}
+
+.available {
+  background-color: var(--positive-normal);
+}
+.notAvailable {
+  background-color: var(--negative-light);
+}
