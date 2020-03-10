@@ -26,7 +26,7 @@
     "build": "rescripts build",
     "test": "jest",
     "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "lint": "eslint . -c .eslintrc.json --ext js,jsx",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/logo.png --prune=true --out=release-builds",
     "package-win": "electron-packager . Aqueous ROV simulator --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Aqueous ROV simulator\"",

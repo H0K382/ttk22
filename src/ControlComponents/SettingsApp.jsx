@@ -10,7 +10,6 @@ export default function SettingsApp() {
   const {
     port,
     host,
-    serialFile,
     messageProtocol,
     /*boatSerialPort,
     boatSerialBaudRate,*/
@@ -21,7 +20,6 @@ export default function SettingsApp() {
 
   const [portInput, setPortInput] = useState(port);
   const [hostInput, setHostInput] = useState(host);
-  const [serialFileInput, setSerialFileInput] = useState(serialFile);
   const [messageProtocolInput, setMessageProtocolInput] = useState(
     messageProtocol,
   );
@@ -35,14 +33,6 @@ export default function SettingsApp() {
   const [useManualInput, setUseManualInput] = useState(useManualHeading);
   const [mapRotationInput, setMapRotationInput] = useState(mapRotation);
   const [inputsChanged, setInputsChanged] = useState([]);
-
-  // Listens to the file-chosen message which is sent with the filename that is chosen
-  useEffect(() => {
-    window.ipcRenderer.on('file-chosen', (event, content) => {
-      setSerialFileInput(content);
-      document.getElementById('serialField').value = content;
-    });
-  });
 
   // Listens to enter-click which runs the updateSettings-function
   useEffect(() => {
@@ -60,11 +50,6 @@ export default function SettingsApp() {
   const closeWindow = () => {
     let w = remote.getCurrentWindow();
     w.close();
-  };
-
-  // Sends a message to the main process to open the file-picker
-  const chooseSerialFile = () => {
-    window.ipcRenderer.send('run-file-pick');
   };
 
   // Function run when an input field is run - updates its state and sets changed-class
@@ -91,7 +76,6 @@ export default function SettingsApp() {
   const updateSettings = () => {
     remote.getGlobal('settings')['port'] = portInput;
     remote.getGlobal('settings')['host'] = hostInput;
-    remote.getGlobal('settings')['serialFile'] = serialFileInput;
     remote.getGlobal('settings')['messageProtocol'] = messageProtocolInput;
     remote.getGlobal('settings')['manualBoatHeading'] = headingInput;
     remote.getGlobal('settings')['useManualHeading'] = useManualInput;
@@ -136,21 +120,6 @@ export default function SettingsApp() {
             onChange={e => handleChange(e, setHostInput)}
           ></input>
           <div className="inputStatus"></div>
-        </div>
-      </div>
-
-      <div className="settingGroup">
-        <label>Serial File</label>
-        <div className="twoInputs">
-          <div className="inputContainer">
-            <input
-              id="serialField"
-              value={serialFile}
-              onChange={e => handleChange(e, setSerialFileInput)}
-            ></input>
-            <div className="inputStatus"></div>
-          </div>
-          <button onClick={chooseSerialFile}></button>
         </div>
       </div>
 

@@ -71,14 +71,6 @@ const menuTemplate = [
           getConnectedClient();
         },
       },
-      // This button really doesn't do anything?
-      /* {
-        label: 'Start ROV Serial Port',
-        accelerator: 'CmdOrCtrl+C',
-        click() {
-          getFileAndLaunch(global.settings.serialFile);
-        },
-      }, */
     ],
   },
   // { role: 'viewMenu' }
