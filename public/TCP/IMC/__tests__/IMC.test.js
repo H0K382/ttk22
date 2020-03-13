@@ -81,6 +81,22 @@ const customNetFollow = {
   angle: 2.2,
 };
 
+const customCameraMessage = {
+  id: 1,
+  zoom: 1,
+  focus_mode: 1,
+  focus_position: 3000,
+  exposure_mode: 1,
+  shutter_speed: 1000,
+  iris: 28,
+  gain: 5
+};
+
+const setServoPosition = {
+  id: 1,
+  value: 0.785,
+};
+
 describe('test IMC encoding', () => {
   test('netFollow header', () => {
     const netFollowBuf = encode.netFollow(netFollow);
@@ -194,6 +210,24 @@ describe('test IMC encode and decode', () => {
 
     expect(encoded[messages.customNetFollowState]).toBeDeepCloseTo(
       customNetFollow,
+      decimalError,
+    );
+  });
+
+  test('customCameraMessage', () => {
+    const encoded = decode(encode.customCameraMessage(customCameraMessage));
+
+    expect(encoded[messages.customCameraMessage]).toBeDeepCloseTo(
+      customCameraMessage,
+      decimalError,
+    );
+  });
+
+  test('setServoPosition', () => {
+    const encoded = decode(encode.setServoPosition(setServoPosition));    
+
+    expect(encoded[messages.setServoPosition]).toBeDeepCloseTo(
+      setServoPosition,
       decimalError,
     );
   });

@@ -11,6 +11,8 @@ const messages = {
   customGoTo: 'customGoTo',
   netFollow: 'netFollow',
   customNetFollowState: 'customNetFollowState',
+  customCameraMessage: 'customCameraMessage',
+  setServoPosition: 'setServoPosition'
 };
 
 const datatypes = {
@@ -282,6 +284,69 @@ const customNetFollowStateMetadata = {
   ],
 };
 
+const customCameraMessageMetadata = {
+  name: messages.customCameraMessage,
+  length: 14,
+  id: {
+    value: 1005,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'id',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'zoom',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'focus_mode',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'focus_position',
+      datatype: datatypes.uint_16t,
+    },
+    {
+      name: 'exposure_mode',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'shutter_speed',
+      datatype: datatypes.uint_16t,
+    },
+    {
+      name: 'iris',
+      datatype: datatypes.uint_16t,
+    },
+    {
+      name: 'gain',
+      datatype: datatypes.uint_16t,
+    },
+  ],
+};
+
+const setServoPositionMetadata = {
+  // https://www.lsts.pt/docs/imc/master/Actuation.html?highlight=actuation#set-servo-position
+  name: messages.setServoPosition,
+  length: 7,
+  id: {
+    value: 302,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'id',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'value',
+      datatype: datatypes.fp32_t,
+    },
+  ],
+};
+
 module.exports = {
   datatypes,
   messages,
@@ -294,4 +359,6 @@ module.exports = {
   desiredZMetadata,
   netFollowMetadata,
   customGoToMetadata,
+  customCameraMessageMetadata,
+  setServoPositionMetadata
 };

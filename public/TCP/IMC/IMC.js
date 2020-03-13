@@ -9,6 +9,8 @@ const {
   desiredZMetadata,
   customGoToMetadata,
   netFollowMetadata,
+  customCameraMessageMetadata,
+  setServoPositionMetadata,
   messages,
 } = require('./IMCMetadata');
 
@@ -33,6 +35,8 @@ const encode = {
   customGoTo: encodeCustomGoTo,
   netFollow: encodeNetFollow,
   customNetFollow: encodeCustomNetFollowState,
+  customCameraMessage: encodeCustomCameraMessage,
+  setServoPosition: encodeSetServoPosition,
   combine: Buffer.concat,
 };
 
@@ -214,6 +218,14 @@ function encodeCustomNetFollowState(customNetFollowState) {
   return encodeImcPackage(customNetFollowState, customNetFollowStateMetadata);
 }
 
+function encodeCustomCameraMessage(cameraMessage) {
+  return encodeImcPackage(cameraMessage, customCameraMessageMetadata);
+}
+
+function encodeSetServoPosition(servoPosition) {
+  return encodeImcPackage(servoPosition, setServoPositionMetadata);
+}
+
 const idToMessageMetadata = {
   1003: customEstimatedStateMetadata,
   1: entityStateMetadata,
@@ -224,6 +236,8 @@ const idToMessageMetadata = {
   1004: customGoToMetadata,
   465: netFollowMetadata,
   1002: customNetFollowStateMetadata,
+  1005: customCameraMessageMetadata,
+  302: setServoPositionMetadata
 };
 
 module.exports = { encode, decode, messages };
