@@ -14,11 +14,12 @@ let messageProtocol = messageProtocols.IMC;
 // How many times the TCP has tried to connect and how many times it can try before quitting.
 let connectionAttempts = 0;
 const limitAttempts = 5;
+let client = null;
 
 // Creates a client that receives and sends data to port 5000
 function getConnectedClient() {
   //console.log('Attempting to create TCP client and connect to server..');
-  const client = new net.Socket();
+  client = new net.Socket();
   messageProtocol = global.settings.messageProtocol;
 
   client.connect({
@@ -237,6 +238,22 @@ function sendIMCData(client) {
   return decode(buf);
 }
 
+function sendCameraSettings() {
+  buf = encode.customCameraMessage({
+    id: global.camera.id,
+    zoom: global.camera.zoom,
+    focus_mode: global.camera.focusMode,
+    focus_position: global.camera.focusPosition,
+    exposure_mode: global.camera.exposureMode,
+    shutter_speed: global.camera.shutterSpeed,
+    iris: global.camera.iris,
+    gain: global.camera.gain
+  })
+  // console.log('Sending camera setting');
+  // console.log(global.camera);
+  client.write(buf)
+}
+
 // Checks if currentmode is available
 function currentModeUnavailable() {
   const { currentMode, dpAvailable, nfAvailable } = global.mode;
@@ -255,4 +272,4 @@ function setSafetyControls() {
   sendVibrationRequest(false); // Sends hard vibration to gamepad
 }
 
-module.exports = { getConnectedClient, sendData, sendIMCData, decodeImcData };
+module.exports = { getConnectedClient, sendData, sendIMCData, decodeImcData, sendCameraSettings };

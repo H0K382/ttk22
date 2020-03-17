@@ -28,6 +28,14 @@
   width: 90%;
 }
 
+.generalSettings {
+  width: 90%;
+}
+
+.cameraSettings {
+  width: 90%;
+}
+
 .SettingsApp input,
 .MessageProtocolDropdown {
   width: 100%;

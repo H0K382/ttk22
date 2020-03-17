@@ -249,3 +249,63 @@ export const customNetFollowStateMetadata = {
     },
   ],
 };
+
+export const customCameraMessageMetadata = {
+  length: 10,
+  id: {
+    value: 1005,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'id',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'zoom',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'focus_mode',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'focus_position',
+      datatype: datatypes.uint_16t,
+    },
+    {
+      name: 'exposure_mode',
+      datatype: datatypes.uint_16t,
+    },
+    {
+      name: 'shutter_speed',
+      datatype: datatypes.uint_16t,
+    },
+    {
+      name: 'iris',
+      datatype: datatypes.uint_16t,
+    },
+    {
+      name: 'gain',
+      datatype: datatypes.uint_16t,
+    },
+  ],
+};
+
+export const setServoPositionMetadata = {
+  length: 5,
+  id: {
+    value: 302,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'id',
+      datatype: datatypes.uint8_t,
+    },
+    {
+      name: 'value',
+      datatype: datatypes.fp32_t,
+    },
+  ],
+};

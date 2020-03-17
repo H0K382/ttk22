@@ -4,6 +4,7 @@
 const { ipcMain } = require('electron');
 const { handleClick, resetAllBias } = require('./../controls/mapping');
 const { getFileAndSend } = require('./../launch/sendFile');
+const { sendCameraSettings } = require('../TCP/TCPClient')
 
 // Function for setting up listeners between the main process (electron.js) and the renderer process (Components etc.)
 function setIPCListeners() {
@@ -25,6 +26,11 @@ function setIPCListeners() {
   // Listen to update settings
   ipcMain.on('settings-updated', () => {
     sendMessage('settings-updated', 'control');
+  });
+
+  // Listen to update camera settings
+  ipcMain.on('camera-settings-updated', () => {
+    sendCameraSettings();
   });
 }
 
