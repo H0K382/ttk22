@@ -233,7 +233,16 @@ const startServer = () => {
     setInterval(sendData, 3000);
 
     ipcMain.on('rov-mock-up-send-camera-settings', (event, arg) => {
-      camera_settings = encode.customCameraMessage(arg);
+      camera_settings = encode.customCameraMessage({
+        id: arg.id,
+        zoom: arg.zoom,
+        focus_mode: arg.focusMode,
+        focus_position: arg.focusPosition,
+        exposure_mode: arg.exposureMode,
+        shutter_speed: arg.shutterSpeed,
+        iris: arg.iris,
+        gain: arg.gain
+      });
       console.log(
         'Received rov-mock-up-send-camera-settings:',
         arg,

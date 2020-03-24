@@ -157,18 +157,17 @@ function decodeImcData(buf) {
 function decodeCameraMessage(cameraMessage) {
   console.log(cameraMessage);
   
-  global.cameraSettingsRecieved = cameraMessage;
-  // global.cameraSettingsRecieved = {
-  //   id: cameraMessage.id,
-  //   zoom: cameraMessage.zoom,
-  //   focusMode: cameraMessage.focus_mode, // autofocus
-  //   focusPosition: cameraMessage.focus_position, // mm
-  //   exposureMode: cameraMessage.exposure_mode, // auto
-  //   shutterSpeed: cameraMessage.shutter_speed, // 1/s
-  //   iris: cameraMessage.iris, // 10 x f-number
-  //   gain: cameraMessage.gain,
-  //   tilt: cameraMessage.tilt, // degrees
-  // }
+  global.cameraSettingsRecieved.id = cameraMessage.id,
+  global.cameraSettingsRecieved.zoom = cameraMessage.zoom,
+  global.cameraSettingsRecieved.focusMode = cameraMessage.focus_mode, // autofocus
+  global.cameraSettingsRecieved.focusPosition = cameraMessage.focus_position, // mm
+  global.cameraSettingsRecieved.exposureMode = cameraMessage.exposure_mode, // auto
+  global.cameraSettingsRecieved.shutterSpeed = cameraMessage.shutter_speed, // 1/s
+  global.cameraSettingsRecieved.iris = cameraMessage.iris, // 10 x f-number
+  global.cameraSettingsRecieved.gain = cameraMessage.gain,
+
+  console.log('Global camera settings recieved:',global.cameraSettingsRecieved );
+  
   sendMessage('camera-settings-recieved', 'control');
 }
 

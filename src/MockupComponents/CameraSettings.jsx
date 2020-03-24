@@ -35,7 +35,8 @@ export default function CameraSettings() {
 
   const handleCameraChange = (e, name) => {
     let tempState = cameraState;
-    // tempState[name] = isNaN(Number(value)) ? 0 : Number(value);
+    tempState[name] = isNaN(Number(e.target.value)) ? 0 : Number(e.target.value);
+    console.log(e.target.value, name)
     console.log(tempState);
     setCameraState(tempState);
     ipcRenderer.send(
@@ -60,8 +61,8 @@ export default function CameraSettings() {
               <div className="inputContainer">
                 <select
                   className="MessageProtocolDropdown"
-                  value={cameraState.zoomInput}
-                  onChange={e => handleCameraChange(e, "zoomInput")}
+                  value={cameraState.zoom}
+                  onChange={e => handleCameraChange(e, "zoom")}
                 >
                   {
                     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => {
@@ -80,8 +81,8 @@ export default function CameraSettings() {
               <div className="inputContainer">
                 <select
                   className="MessageProtocolDropdown"
-                  value={cameraState.focusModeInput}
-                  onChange={e => handleCameraChange(e, "focusModeInput")}
+                  value={cameraState.focusMode}
+                  onChange={e => handleCameraChange(e, "focusMode")}
                 >
                   <option value={0}>Automatic</option>
                   <option value={1}>Manual</option>
@@ -97,8 +98,8 @@ export default function CameraSettings() {
               <div className="inputContainer">
                 <select
                   className="MessageProtocolDropdown"
-                  value={cameraState.focusPositionInput}
-                  onChange={e => handleCameraChange(e, "focusPositionInput")}
+                  value={cameraState.focusPosition}
+                  onChange={e => handleCameraChange(e, "focusPosition")}
                 >
                   {
                     focusPositionValues.map((item, i) => {
@@ -117,8 +118,8 @@ export default function CameraSettings() {
               <div className="inputContainer">
                 <select
                   className="MessageProtocolDropdown"
-                  value={cameraState.exposureModeInput}
-                  onChange={e => handleCameraChange(e, "exposureModeInput")}
+                  value={cameraState.exposureMode}
+                  onChange={e => handleCameraChange(e, "exposureMode")}
                 >
                   <option value={0}>Automatic</option>
                   <option value={1}>Manual</option>
@@ -134,8 +135,8 @@ export default function CameraSettings() {
               <div className="inputContainer">
                 <select
                   className="MessageProtocolDropdown"
-                  value={cameraState.shutterSpeedInput}
-                  onChange={e => handleCameraChange(e, "shutterSpeedInput")}
+                  value={cameraState.shutterSpeed}
+                  onChange={e => handleCameraChange(e, "shutterSpeed")}
                 >
                   {
                     shutterSpeeds.map((item, i) => {
@@ -154,8 +155,8 @@ export default function CameraSettings() {
               <div className="inputContainer">
                 <select
                   className="MessageProtocolDropdown"
-                  value={cameraState.irisInput}
-                  onChange={e => handleCameraChange(e, "irisInput")}
+                  value={cameraState.iris}
+                  onChange={e => handleCameraChange(e, "iris")}
                 >
                   {
                     irisValues.map((item, i) => {
@@ -174,8 +175,8 @@ export default function CameraSettings() {
               <div className="inputContainer">
                 <select
                   className="MessageProtocolDropdown"
-                  value={cameraState.gainInput}
-                  onChange={e => handleCameraChange(e, "gainInput")}
+                  value={cameraState.gain}
+                  onChange={e => handleCameraChange(e, "gain")}
                 >
                   {
                     gainValues.map((item, i) => {

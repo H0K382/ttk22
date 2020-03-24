@@ -4,7 +4,6 @@
 const { ipcMain } = require('electron');
 const { handleClick, resetAllBias } = require('./../controls/mapping');
 const { getFileAndSend } = require('./../launch/sendFile');
-const { sendCameraSettings } = require('../TCP/TCPClient')
 
 // Function for setting up listeners between the main process (electron.js) and the renderer process (Components etc.)
 function setIPCListeners() {
@@ -30,6 +29,9 @@ function setIPCListeners() {
 
   // Listen to update camera settings
   ipcMain.on('camera-settings-updated', () => {
+    // To resolve circular import. TODO: Should probably be handled in a better way
+    const { sendCameraSettings } = require('./../TCP/TCPClient')
+  
     sendCameraSettings();
   });
 }
