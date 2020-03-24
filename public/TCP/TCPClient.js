@@ -2,6 +2,7 @@ const net = require('net');
 const { encodeData, decodeData } = require('./coding');
 const { encode, decode, messages } = require('./IMC/IMC');
 const { sendVibrationRequest } = require('./../controls/mapping');
+const { sendMessage } = require('../utils/IPC')
 
 const messageLength = 256;
 
@@ -55,9 +56,11 @@ function getConnectedClient() {
         sendData(client, global.toROV);
       } else if (messageProtocol === messageProtocols.IMC) {
         const fromROVIMC = decodeImcData(buf);
-        global.fromROVIMC = fromROVIMC;
-        const toROVIMC = sendIMCData(client);
-        global.toROVIMC = toROVIMC;
+        if (messages.entityState in fromROVIMC) {
+          global.fromROVIMC = fromROVIMC;
+          const toROVIMC = sendIMCData(client);
+          global.toROVIMC = toROVIMC;
+        }
       }
     } catch (error) {
       console.log('Unable to decode message:');
@@ -123,24 +126,50 @@ function decodeImcData(buf) {
     dpAvailable: false,
   };
 */
-  const entityState = recievedData[messages.entityState];
-  global.mode.nfAvailable = entityState.flags.NF;
-  global.mode.dpAvailable = entityState.flags.DP;
-  // TODO: Handle when ROV tells state is MANUAL
-  if (currentModeUnavailable()) {
-    setSafetyControls();
+  if (messages.entityState in recievedData) {
+    const entityState = recievedData[messages.entityState];
+    global.mode.nfAvailable = entityState.flags.NF;
+    global.mode.dpAvailable = entityState.flags.DP;
+    // TODO: Handle when ROV tells state is MANUAL
+    if (currentModeUnavailable()) {
+      setSafetyControls();
+    }
   }
 
-  const customEstimatedState = recievedData[messages.customEstimatedState];
-  global.fromROV = {
-    north: customEstimatedState.x,
-    east: customEstimatedState.y,
-    down: customEstimatedState.z,
-    roll: customEstimatedState.phi,
-    pitch: customEstimatedState.theta,
-    yaw: customEstimatedState.psi,
-  };
+  if (messages.customEstimatedState in recievedData) {
+    const customEstimatedState = recievedData[messages.customEstimatedState];
+    global.fromROV = {
+      north: customEstimatedState.x,
+      east: customEstimatedState.y,
+      down: customEstimatedState.z,
+      roll: customEstimatedState.phi,
+      pitch: customEstimatedState.theta,
+      yaw: customEstimatedState.psi,
+    };
+  }
+
+  if (messages.customCameraMessage in recievedData) {
+    decodeCameraMessage(recievedData[messages.customCameraMessage]);
+  }
   return recievedData;
+}
+
+function decodeCameraMessage(cameraMessage) {
+  console.log(cameraMessage);
+  
+  global.cameraSettingsRecieved = cameraMessage;
+  // global.cameraSettingsRecieved = {
+  //   id: cameraMessage.id,
+  //   zoom: cameraMessage.zoom,
+  //   focusMode: cameraMessage.focus_mode, // autofocus
+  //   focusPosition: cameraMessage.focus_position, // mm
+  //   exposureMode: cameraMessage.exposure_mode, // auto
+  //   shutterSpeed: cameraMessage.shutter_speed, // 1/s
+  //   iris: cameraMessage.iris, // 10 x f-number
+  //   gain: cameraMessage.gain,
+  //   tilt: cameraMessage.tilt, // degrees
+  // }
+  sendMessage('camera-settings-recieved', 'control');
 }
 
 function sendIMCData(client) {

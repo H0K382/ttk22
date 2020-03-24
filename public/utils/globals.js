@@ -26,6 +26,18 @@ const initGlobals = () => {
     tilt: 0, // degrees
   }
 
+  global.cameraSettingsRecieved = {
+    id: 1,
+    zoom: 1,
+    focusMode: 0, // autofocus
+    focusPosition: 0, // mm
+    exposureMode: 0, // auto
+    shutterSpeed: 1000, // 1/s
+    iris: 28, // 10 x f-number
+    gain: 0,
+    tilt: 0, // degrees
+  }
+
   // Initialize a serial object with the port and baud rate given in the global settings
   /*global.settings.boatSerialPortObject = new SerialPortObject(
     global.settings.boatSerialPort,

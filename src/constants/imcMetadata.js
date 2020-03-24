@@ -251,7 +251,7 @@ export const customNetFollowStateMetadata = {
 };
 
 export const customCameraMessageMetadata = {
-  length: 10,
+  length: 14,
   id: {
     value: 1005,
     datatype: datatypes.uint_16t,
@@ -275,7 +275,7 @@ export const customCameraMessageMetadata = {
     },
     {
       name: 'exposure_mode',
-      datatype: datatypes.uint_16t,
+      datatype: datatypes.uint_8t,
     },
     {
       name: 'shutter_speed',

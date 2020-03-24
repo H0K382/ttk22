@@ -14,6 +14,7 @@ export default function Values({
   changeEffect,
   IMCActive,
   settings,
+  showSettings,
 }) {
   const extractData = (msgData, msgName) => {
     if (msgName === 'netFollow' || msgName === 'customGoTo') {
@@ -71,7 +72,7 @@ export default function Values({
       />
     ));
   };
-
+  
   return (
     <div className="Values">
       <Title>{title}</Title>
@@ -80,7 +81,7 @@ export default function Values({
           {IMCActive ? renderIMC() : renderOld()}
         </div>
         {settings ? (
-          <ROVSettings title="ROV Settings" settings={settings} />
+          <ROVSettings title="ROV Settings" settings={settings} showSettings={showSettings} />
         ) : null}
       </div>
     </div>

@@ -6,6 +6,7 @@ import NFView from './NFView';
 import Values from './../ControlComponents/Values';
 
 import './css/ROVMockUp.css';
+import CameraSettings from './CameraSettings';
 
 const { ipcRenderer } = require('electron');
 
@@ -53,6 +54,7 @@ export default function ROVMockUp() {
       <FromROV />
       <ModeAvailableToggles />
       <NFView />
+      <CameraSettings />
       <div>
         <Values
           IMCActive={true}

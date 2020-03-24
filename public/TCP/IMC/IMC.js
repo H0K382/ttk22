@@ -131,7 +131,7 @@ function decodeImcMessage(buf, offset = 0, name = '', hasHeader = true) {
     id = buf.readUInt16BE(offset);
     offset += 2;
   }
-
+  
   const imcMessageMetadata = idToMessageMetadata[id];
   if (name) name += '.';
   name += imcMessageMetadata.name;

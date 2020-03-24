@@ -3,18 +3,7 @@ import PropTypes from 'prop-types';
 
 import './css/ROVSettings.css';
 
-// Contains which global settings to use (key) and which name it should display (value)
-const showSettings = {
-  port: 'TCP',
-  host: 'IP',
-  messageProtocol: 'Protocol',
-  /*boatSerialPort: 'S-port',
-  boatSerialBaudRate: 'Baud',*/
-  manualBoatHeading: 'Boat heading',
-  mapRotation: 'Rotate boat',
-};
-
-export default function ROVSettings({ settings }) {
+export default function ROVSettings({ settings, showSettings }) {
   return (
     <div className="ROVSettings_root">
       <div className="SettingsFields">

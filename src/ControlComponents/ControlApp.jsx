@@ -19,6 +19,30 @@ function ControlApp() {
   const [toIMC, setToIMC] = useState(remote.getGlobal('toROVIMC'));
   const [fromIMC, setFromIMC] = useState(remote.getGlobal('fromROVIMC'));
   const [settings, setSettings] = useState(remote.getGlobal('settings'));
+  const [cameraSettings, setCameraSettings] = useState(remote.getGlobal('cameraSettingsRecieved'));
+
+  const showSettings = {
+    port: 'TCP',
+    host: 'IP',
+    messageProtocol: 'Protocol',
+    /*boatSerialPort: 'S-port',
+    boatSerialBaudRate: 'Baud',*/
+    manualBoatHeading: 'Boat heading',
+    mapRotation: 'Rotate boat',
+  };
+
+  const showCameraSettings = {
+    zoom: 'Zoom',
+    focusMode: 'Focus Mode',
+    focusPosition: 'Focus Position',
+    exposureMode: 'Exposure mode',
+    shutterSpeed: 'Shutter Speed',
+    iris: 'Iris',
+    gain: 'Gain',
+    tilt: 'Tilt',
+  };
+  
+  
   const [NFValues, setNFValues] = useState(remote.getGlobal('netfollowing'));
   const [DPValues, setDPValues] = useState(
     remote.getGlobal('dynamicpositioning'),
@@ -39,6 +63,9 @@ function ControlApp() {
       const currentSettings = remote.getGlobal('settings');
       setIMCActive(currentSettings.messageProtocol === 'IMC');
       setSettings({ ...currentSettings });
+    });
+    window.ipcRenderer.on('camera-settings-recieved', () => {
+      setCameraSettings(remote.getGlobal('cameraSettingsRecieved'))
     });
     return () => {
       clearInterval(interval);
@@ -75,6 +102,8 @@ function ControlApp() {
               values={IMCActive ? fromIMC : sensorValues}
               changeEffect={false}
               IMCActive={IMCActive}
+              settings={cameraSettings}
+              showSettings={showCameraSettings}
             />
           </div>
           <div className="bottomRight">
@@ -84,6 +113,7 @@ function ControlApp() {
               values={IMCActive ? toIMC : controlValues}
               changeEffect={true}
               settings={settings}
+              showSettings={showSettings}
             />
           </div>
         </div>

@@ -144,18 +144,18 @@ export default function SettingsApp() {
     window.ipcRenderer.send('settings-updated');
   };
 
-    // Function which is run on button click or enter click to update values
-    const updateCameraSettings = () => {
-      remote.getGlobal('camera')['zoom'] = zoomInput;
-      remote.getGlobal('camera')['focusMode'] = focusModeInput;
-      remote.getGlobal('camera')['focusPosition'] = focusPositionInput;
-      remote.getGlobal('camera')['exposureMode'] = exposureModeInput;
-      remote.getGlobal('camera')['shutterSpeed'] = shutterSpeedInput;
-      remote.getGlobal('camera')['iris'] = irisInput;
-      remote.getGlobal('camera')['gain'] = gainInput;
-      updateStyle();
-      window.ipcRenderer.send('camera-settings-updated');
-    };
+  // Function which is run on button click or enter click to update values
+  const updateCameraSettings = () => {
+    remote.getGlobal('camera')['zoom'] = zoomInput;
+    remote.getGlobal('camera')['focusMode'] = focusModeInput;
+    remote.getGlobal('camera')['focusPosition'] = focusPositionInput;
+    remote.getGlobal('camera')['exposureMode'] = exposureModeInput;
+    remote.getGlobal('camera')['shutterSpeed'] = shutterSpeedInput;
+    remote.getGlobal('camera')['iris'] = irisInput;
+    remote.getGlobal('camera')['gain'] = gainInput;
+    updateStyle();
+    window.ipcRenderer.send('camera-settings-updated');
+  };
 
   return (
     <div className="SettingsApp">
