@@ -71,17 +71,6 @@ export default function SettingsApp() {
   const irisValues = [18, 20, 24, 28, 34, 40, 48, 56, 68, 80, 96]
   const gainValues = [28, 26, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 0]
 
-  // Listens to enter-click which runs the updateSettings-function
-  // useEffect(() => {
-  //   document.addEventListener('keydown', e => {
-  //     if (e.key) {
-  //       const key = e.key.toUpperCase();
-  //       if (key === 'ENTER') {
-  //         updateSettings();
-  //       }
-  //     }
-  //   });
-  // });
 
   // Closes current window - which is the settings-window
   const closeWindow = () => {
@@ -175,6 +164,31 @@ export default function SettingsApp() {
 
         <div className="settingGroup">
           <label>Host IP Address</label>
+      <div className="settingGroup">
+        <label>TCP Port</label>
+        <div className="inputContainer">
+          <input
+            value={portInput}
+            onChange={e => handleChange(e, setPortInput)}
+          ></input>
+          <div className="inputStatus"></div>
+        </div>
+      </div>
+
+      <div className="settingGroup">
+        <label>Host IP Address</label>
+        <div className="inputContainer">
+          <input
+            value={hostInput}
+            onChange={e => handleChange(e, setHostInput)}
+          ></input>
+          <div className="inputStatus"></div>
+        </div>
+      </div>
+
+      <div className="settingGroup">
+        <div className="MessageProtocolMenu">
+          <label>Message Protocol</label>
           <div className="inputContainer">
             <input
               value={hostInput}
