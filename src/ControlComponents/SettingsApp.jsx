@@ -110,6 +110,10 @@ export default function SettingsApp() {
     const newCameraState = { ...cameraState, [name]: value };
     setCameraState(newCameraState);
     remote.getGlobal('camera')[name] = value
+    sendCameraUpdatedMessage();
+  }
+
+  const sendCameraUpdatedMessage = () => {
     updateStyle();
     window.ipcRenderer.send('camera-settings-updated');
   }
@@ -210,10 +214,10 @@ export default function SettingsApp() {
         </div>
 
         <button className="updateSettingsBtn" onClick={updateSettings}>
-              UPDATE
-            </button>
+          UPDATE
+        </button>
       </div>
-      <div className="cameraSettings">
+      <div className="generalSettings">
         <h3>Camera</h3>
         <div className="settingGroup">
           <div className="MessageProtocolMenu">
@@ -330,6 +334,7 @@ export default function SettingsApp() {
         </div>
 
         <div className="settingGroup">
+
           <div className="MessageProtocolMenu">
             <label>Gain</label>
             <div className="inputContainer">
@@ -349,6 +354,10 @@ export default function SettingsApp() {
           </div>
         </div>
       </div>
+
+      <button className="updateSettingsBtn" onClick={sendCameraUpdatedMessage}>
+        SEND
+      </button>
     </div >
   );
 }
