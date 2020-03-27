@@ -57,13 +57,6 @@ export default function SettingsApp() {
   const irisValues = [18, 20, 24, 28, 34, 40, 48, 56, 68, 80, 96]
   const gainValues = [28, 26, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 0]
 
-
-  // Closes current window - which is the settings-window
-  const closeWindow = () => {
-    let w = remote.getCurrentWindow();
-    w.close();
-  };
-
   // Function run when an input field is run - updates its state and sets changed-class
   const handleChange = (event, setFunction) => {
     const el = event.target;
@@ -114,7 +107,7 @@ export default function SettingsApp() {
 
   const handleCameraChange = (e, name) => {
     const value = isNaN(Number(e.target.value)) ? 0 : Number(e.target.value);
-    const newCameraState = {...cameraState, [name]: value};
+    const newCameraState = { ...cameraState, [name]: value };
     setCameraState(newCameraState);
     remote.getGlobal('camera')[name] = value
     updateStyle();
@@ -139,19 +132,18 @@ export default function SettingsApp() {
 
         <div className="settingGroup">
           <label>Host IP Address</label>
-          <div className="settingGroup">
-            <label>TCP Port</label>
-            <div className="inputContainer">
-              <input
-                value={portInput}
-                onChange={e => handleChange(e, setPortInput)}
-              ></input>
-              <div className="inputStatus"></div>
-            </div>
+          <div className="inputContainer">
+            <input
+              value={hostInput}
+              onChange={e => handleChange(e, setHostInput)}
+            ></input>
+            <div className="inputStatus"></div>
           </div>
+        </div>
 
-          <div className="settingGroup">
-            <label>Host IP Address</label>
+        <div className="settingGroup">
+          <div className="MessageProtocolMenu">
+            <label>Message Protocol</label>
             <div className="inputContainer">
               <input
                 value={hostInput}
@@ -160,243 +152,203 @@ export default function SettingsApp() {
               <div className="inputStatus"></div>
             </div>
           </div>
+        </div>
 
-          <div className="settingGroup">
-            <div className="MessageProtocolMenu">
-              <label>Message Protocol</label>
-              <div className="inputContainer">
-                <input
-                  value={hostInput}
-                  onChange={e => handleChange(e, setHostInput)}
-                ></input>
-                <div className="inputStatus"></div>
-              </div>
+        <div className="settingGroup">
+          <div className="MessageProtocolMenu">
+            <label>Message Protocol</label>
+            <div className="inputContainer">
+              <select
+                className="MessageProtocolDropdown"
+                value={messageProtocolInput}
+                onChange={e => handleChange(e, setMessageProtocolInput)}
+              >
+                <option value={MessageProtocols.OLD}>OLD</option>
+                <option value={MessageProtocols.IMC}>IMC</option>
+              </select>
+              <div className="inputStatus"></div>
             </div>
+          </div>
+        </div>
 
-            <div className="settingGroup">
-              <div className="MessageProtocolMenu">
-                <label>Message Protocol</label>
-                <div className="inputContainer">
-                  <select
-                    className="MessageProtocolDropdown"
-                    value={messageProtocolInput}
-                    onChange={e => handleChange(e, setMessageProtocolInput)}
-                  >
-                    <option value={MessageProtocols.OLD}>OLD</option>
-                    <option value={MessageProtocols.IMC}>IMC</option>
-                  </select>
-                  <div className="inputStatus"></div>
-                </div>
-              </div>
+        <div className="settingGroup">
+          <label>Manual Boat Heading</label>
+          <div className="twoInputs">
+            <div className="inputContainer">
+              <input
+                style={{
+                  backgroundColor: useManualInput ? 'white' : '#eaeaea',
+                }} //using inline style to avoid interference with inputStatus-style
+                value={headingInput}
+                type="number"
+                step={1}
+                min={0}
+                max={360}
+                onChange={e => handleChange(e, setHeadingInput)}
+              />
+              <div className="inputStatus"></div>
             </div>
+            <input
+              className="useManual"
+              checked={useManualInput}
+              type="checkbox"
+              onChange={() => setUseManualInput(!useManualInput)}
+            ></input>
+          </div>
+        </div>
 
-            {/*<div className="settingGroup">
-        <label>Boat serial port</label>
-        <div className="inputContainer">
-          <input
-            value={boatSerialPortInput}
-            onChange={e => handleChange(e, setBoatSerialPortInput)}
-          />
-          <div className="inputStatus"></div>
+        <div className="settingGroup">
+          <label>Rotate Minimap Boat:</label>
+          <div>
+            <input
+              id="mapRotation"
+              checked={mapRotationInput}
+              type="checkbox"
+              onChange={() => setMapRotationInput(!mapRotationInput)}
+            ></input>
+          </div>
+        </div>
+
+        <button className="updateSettingsBtn" onClick={updateSettings}>
+              UPDATE
+            </button>
+      </div>
+      <div className="cameraSettings">
+        <h3>Camera</h3>
+        <div className="settingGroup">
+          <div className="MessageProtocolMenu">
+            <label>Zoom</label>
+            <div className="inputContainer">
+              <select
+                className="MessageProtocolDropdown"
+                value={cameraState.zoom}
+                onChange={e => handleCameraChange(e, "zoom")}
+              >
+                {
+                  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => {
+                    return <option value={item} key={i}>{item}x</option>
+                  })
+                }
+              </select>
+              <div className="inputStatus"></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="settingGroup">
+          <div className="MessageProtocolMenu">
+            <label>Focus Mode</label>
+            <div className="inputContainer">
+              <select
+                className="MessageProtocolDropdown"
+                value={cameraState.focusMode}
+                onChange={e => handleCameraChange(e, "focusMode")}
+              >
+                <option value={0}>Automatic</option>
+                <option value={1}>Manual</option>
+              </select>
+              <div className="inputStatus"></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="settingGroup">
+          <div className="MessageProtocolMenu">
+            <label>Focus Position</label>
+            <div className="inputContainer">
+              <select
+                className="MessageProtocolDropdown"
+                value={cameraState.focusPosition}
+                onChange={e => handleCameraChange(e, "focusPosition")}
+              >
+                {
+                  focusPositionValues.map((item, i) => {
+                    return <option value={item} key={i}>{focusMmToString(item)}</option>
+                  })
+                }
+              </select>
+              <div className="inputStatus"></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="settingGroup">
+          <div className="MessageProtocolMenu">
+            <label>Exposure Mode</label>
+            <div className="inputContainer">
+              <select
+                className="MessageProtocolDropdown"
+                value={cameraState.exposureMode}
+                onChange={e => handleCameraChange(e, "exposureMode")}
+              >
+                <option value={0}>Automatic</option>
+                <option value={1}>Manual</option>
+              </select>
+              <div className="inputStatus"></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="settingGroup">
+          <div className="MessageProtocolMenu">
+            <label>Shutter Speed</label>
+            <div className="inputContainer">
+              <select
+                className="MessageProtocolDropdown"
+                value={cameraState.shutterSpeed}
+                onChange={e => handleCameraChange(e, "shutterSpeed")}
+              >
+                {
+                  shutterSpeeds.map((item, i) => {
+                    return <option value={item} key={i}>1/{item}</option>
+                  })
+                }
+              </select>
+              <div className="inputStatus"></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="settingGroup">
+          <div className="MessageProtocolMenu">
+            <label>Iris</label>
+            <div className="inputContainer">
+              <select
+                className="MessageProtocolDropdown"
+                value={cameraState.iris}
+                onChange={e => handleCameraChange(e, "iris")}
+              >
+                {
+                  irisValues.map((item, i) => {
+                    return <option value={item} key={i}>F{item / 10}</option>
+                  })
+                }
+              </select>
+              <div className="inputStatus"></div>
+            </div>
+          </div>
+        </div>
+
+        <div className="settingGroup">
+          <div className="MessageProtocolMenu">
+            <label>Gain</label>
+            <div className="inputContainer">
+              <select
+                className="MessageProtocolDropdown"
+                value={cameraState.gain}
+                onChange={e => handleCameraChange(e, "gain")}
+              >
+                {
+                  gainValues.map((item, i) => {
+                    return <option value={item} key={i}>{item} step</option>
+                  })
+                }
+              </select>
+              <div className="inputStatus"></div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className="settingGroup">
-        <label>Boat serial baud rate</label>
-        <div className="inputContainer">
-          <input
-            value={boatSerialBaudRateInput}
-            onChange={e => handleChange(e, setBoatSerialBaudRateInput)}
-          />
-          <div className="inputStatus"></div>
-        </div>
-  </div>*/}
-
-            <div className="settingGroup">
-              <label>Manual Boat Heading</label>
-              <div className="twoInputs">
-                <div className="inputContainer">
-                  <input
-                    style={{
-                      backgroundColor: useManualInput ? 'white' : '#eaeaea',
-                    }} //using inline style to avoid interference with inputStatus-style
-                    value={headingInput}
-                    type="number"
-                    step={1}
-                    min={0}
-                    max={360}
-                    onChange={e => handleChange(e, setHeadingInput)}
-                  />
-                  <div className="inputStatus"></div>
-                </div>
-                <input
-                  className="useManual"
-                  checked={useManualInput}
-                  type="checkbox"
-                  onChange={() => setUseManualInput(!useManualInput)}
-                ></input>
-              </div>
-            </div>
-
-            <div className="settingGroup">
-              <label>Rotate Minimap Boat:</label>
-              <div>
-                <input
-                  id="mapRotation"
-                  checked={mapRotationInput}
-                  type="checkbox"
-                  onChange={() => setMapRotationInput(!mapRotationInput)}
-                ></input>
-              </div>
-            </div>
-
-            <button className="updateSettingsBtn" onClick={updateSettings}>
-              UPDATE
-        </button>
-          </div>
-
-          <div className="cameraSettings">
-            <h3>Camera</h3>
-            <div className="settingGroup">
-              <div className="MessageProtocolMenu">
-                <label>Zoom</label>
-                <div className="inputContainer">
-                  <select
-                    className="MessageProtocolDropdown"
-                    value={cameraState.zoom}
-                    onChange={e => handleCameraChange(e, "zoom")}
-                  >
-                    {
-                      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => {
-                        return <option value={item} key={i}>{item}x</option>
-                      })
-                    }
-                  </select>
-                  <div className="inputStatus"></div>
-                </div>
-              </div>
-            </div>
-
-            <div className="settingGroup">
-              <div className="MessageProtocolMenu">
-                <label>Focus Mode</label>
-                <div className="inputContainer">
-                  <select
-                    className="MessageProtocolDropdown"
-                    value={cameraState.focusMode}
-                    onChange={e => handleCameraChange(e, "focusMode")}
-                  >
-                    <option value={0}>Automatic</option>
-                    <option value={1}>Manual</option>
-                  </select>
-                  <div className="inputStatus"></div>
-                </div>
-              </div>
-            </div>
-
-            <div className="settingGroup">
-              <div className="MessageProtocolMenu">
-                <label>Focus Position</label>
-                <div className="inputContainer">
-                  <select
-                    className="MessageProtocolDropdown"
-                    value={cameraState.focusPosition}
-                    onChange={e => handleCameraChange(e, "focusPosition")}
-                  >
-                    {
-                      focusPositionValues.map((item, i) => {
-                        return <option value={item} key={i}>{focusMmToString(item)}</option>
-                      })
-                    }
-                  </select>
-                  <div className="inputStatus"></div>
-                </div>
-              </div>
-            </div>
-
-            <div className="settingGroup">
-              <div className="MessageProtocolMenu">
-                <label>Exposure Mode</label>
-                <div className="inputContainer">
-                  <select
-                    className="MessageProtocolDropdown"
-                    value={cameraState.exposureMode}
-                    onChange={e => handleCameraChange(e, "exposureMode")}
-                  >
-                    <option value={0}>Automatic</option>
-                    <option value={1}>Manual</option>
-                  </select>
-                  <div className="inputStatus"></div>
-                </div>
-              </div>
-            </div>
-
-            <div className="settingGroup">
-              <div className="MessageProtocolMenu">
-                <label>Shutter Speed</label>
-                <div className="inputContainer">
-                  <select
-                    className="MessageProtocolDropdown"
-                    value={cameraState.shutterSpeed}
-                    onChange={e => handleCameraChange(e, "shutterSpeed")}
-                  >
-                    {
-                      shutterSpeeds.map((item, i) => {
-                        return <option value={item} key={i}>1/{item}</option>
-                      })
-                    }
-                  </select>
-                  <div className="inputStatus"></div>
-                </div>
-              </div>
-            </div>
-
-            <div className="settingGroup">
-              <div className="MessageProtocolMenu">
-                <label>Iris</label>
-                <div className="inputContainer">
-                  <select
-                    className="MessageProtocolDropdown"
-                    value={cameraState.iris}
-                    onChange={e => handleCameraChange(e, "iris")}
-                  >
-                    {
-                      irisValues.map((item, i) => {
-                        return <option value={item} key={i}>F{item / 10}</option>
-                      })
-                    }
-                  </select>
-                  <div className="inputStatus"></div>
-                </div>
-              </div>
-            </div>
-
-            <div className="settingGroup">
-              <div className="MessageProtocolMenu">
-                <label>Gain</label>
-                <div className="inputContainer">
-                  <select
-                    className="MessageProtocolDropdown"
-                    value={cameraState.gain}
-                    onChange={e => handleCameraChange(e, "gain")}
-                  >
-                    {
-                      gainValues.map((item, i) => {
-                        return <option value={item} key={i}>{item} step</option>
-                      })
-                    }
-                  </select>
-                  <div className="inputStatus"></div>
-                </div>
-              </div>
-            </div>
-            {/* <button className="updateSettingsBtn" onClick={updateCameraSettings}>
-              UPDATE
-            </button> */}
-          </div>
-          <button className="closeSettings" onClick={closeWindow}></button>
-        </div >
-      </ div >
-    </ div >
+    </div >
   );
 }

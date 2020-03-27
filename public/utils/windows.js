@@ -30,6 +30,7 @@ function createWindows() {
     x: xVideoWindow,
     y: yVideoWindow,
     frame: false,
+    // titleBarStyle: 'hidden',
     transparent: true,
     webPreferences: {
       nodeIntegration: true,
@@ -193,18 +194,18 @@ function createKeyboardMappingWindow() {
 function createSettingsWindow() {
   let settingsWindow = new BrowserWindow({
     title: 'Settings',
-    modal: true,
-    frame: false,
+    // modal: true,
+    // frame: false,
     parent: controlWindow,
-    x: xControlWindow + 10,
-    y: yControlWindow + 50,
-    width: 380,
-    height: 560,
+    // x: xControlWindow + 10,
+    // y: yControlWindow + 50,
+    // width: 380,
+    // height: 560,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
     },
-    transparent: true,
+    // transparent: true,
   });
   settingsWindow.setMenu(null);
 
