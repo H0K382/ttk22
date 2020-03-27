@@ -30,17 +30,6 @@ export default function SettingsApp() {
     mapRotation,
   } = remote.getGlobal('settings');
 
-  const {
-    zoom,
-    focusMode, // autofocus
-    focusPosition, // mm
-    exposureMode, // auto
-    shutterSpeed, // 1/s
-    iris, // 10xf-number
-    gain,
-    // tilt, // degrees
-  } = remote.getGlobal('camera');
-
   const [portInput, setPortInput] = useState(port);
   const [hostInput, setHostInput] = useState(host);
   const [messageProtocolInput, setMessageProtocolInput] = useState(
@@ -57,13 +46,10 @@ export default function SettingsApp() {
   const [mapRotationInput, setMapRotationInput] = useState(mapRotation);
   const [inputsChanged, setInputsChanged] = useState([]);
 
-  const [zoomInput, setZoomInput] = useState(zoom);
-  const [focusModeInput, setFocusModeInput] = useState(focusMode);
-  const [focusPositionInput, setFocusPositionInput] = useState(focusPosition);
-  const [exposureModeInput, setExposureModeInput] = useState(exposureMode);
-  const [shutterSpeedInput, setShutterSpeedInput] = useState(shutterSpeed);
-  const [irisInput, setIrisInput] = useState(iris);
-  const [gainInput, setGainInput] = useState(gain);
+  const [
+    cameraState,
+    setCameraState,
+  ] = useState(remote.getGlobal('camera'));
   // const [tiltInput, setTiltInput] = useState(tilt);
 
   const shutterSpeeds = [10000, 6000, 4000, 3000, 2000, 1500, 1000, 725, 500, 350, 250, 180, 125, 100, 90, 60, 30, 15, 8, 4, 2, 1];
@@ -100,13 +86,6 @@ export default function SettingsApp() {
     setInputsChanged([]);
   };
 
-  const handleCameraChange = (event, setFunction) => {
-    const el = event.target;
-    const value = isNaN(el.value) ? el.value : parseFloat(el.value)
-    setFunction(value);
-    updateCameraSettings();
-  }
-
   // Function which is run on button click or enter click to update values
   const updateSettings = () => {
     remote.getGlobal('settings')['port'] = portInput;
@@ -133,18 +112,14 @@ export default function SettingsApp() {
     window.ipcRenderer.send('settings-updated');
   };
 
-  // Function which is run on button click or enter click to update values
-  const updateCameraSettings = () => {
-    remote.getGlobal('camera')['zoom'] = zoomInput;
-    remote.getGlobal('camera')['focusMode'] = focusModeInput;
-    remote.getGlobal('camera')['focusPosition'] = focusPositionInput;
-    remote.getGlobal('camera')['exposureMode'] = exposureModeInput;
-    remote.getGlobal('camera')['shutterSpeed'] = shutterSpeedInput;
-    remote.getGlobal('camera')['iris'] = irisInput;
-    remote.getGlobal('camera')['gain'] = gainInput;
+  const handleCameraChange = (e, name) => {
+    const value = isNaN(Number(e.target.value)) ? 0 : Number(e.target.value);
+    const newCameraState = {...cameraState, [name]: value};
+    setCameraState(newCameraState);
+    remote.getGlobal('camera')[name] = value
     updateStyle();
     window.ipcRenderer.send('camera-settings-updated');
-  };
+  }
 
   return (
     <div className="SettingsApp">
@@ -288,8 +263,8 @@ export default function SettingsApp() {
                 <div className="inputContainer">
                   <select
                     className="MessageProtocolDropdown"
-                    value={zoomInput}
-                    onChange={e => handleCameraChange(e, setZoomInput)}
+                    value={cameraState.zoom}
+                    onChange={e => handleCameraChange(e, "zoom")}
                   >
                     {
                       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => {
@@ -308,8 +283,8 @@ export default function SettingsApp() {
                 <div className="inputContainer">
                   <select
                     className="MessageProtocolDropdown"
-                    value={focusModeInput}
-                    onChange={e => handleCameraChange(e, setFocusModeInput)}
+                    value={cameraState.focusMode}
+                    onChange={e => handleCameraChange(e, "focusMode")}
                   >
                     <option value={0}>Automatic</option>
                     <option value={1}>Manual</option>
@@ -325,8 +300,8 @@ export default function SettingsApp() {
                 <div className="inputContainer">
                   <select
                     className="MessageProtocolDropdown"
-                    value={focusPositionInput}
-                    onChange={e => handleCameraChange(e, setFocusPositionInput)}
+                    value={cameraState.focusPosition}
+                    onChange={e => handleCameraChange(e, "focusPosition")}
                   >
                     {
                       focusPositionValues.map((item, i) => {
@@ -345,8 +320,8 @@ export default function SettingsApp() {
                 <div className="inputContainer">
                   <select
                     className="MessageProtocolDropdown"
-                    value={exposureModeInput}
-                    onChange={e => handleCameraChange(e, setExposureModeInput)}
+                    value={cameraState.exposureMode}
+                    onChange={e => handleCameraChange(e, "exposureMode")}
                   >
                     <option value={0}>Automatic</option>
                     <option value={1}>Manual</option>
@@ -362,8 +337,8 @@ export default function SettingsApp() {
                 <div className="inputContainer">
                   <select
                     className="MessageProtocolDropdown"
-                    value={shutterSpeedInput}
-                    onChange={e => handleCameraChange(e, setShutterSpeedInput)}
+                    value={cameraState.shutterSpeed}
+                    onChange={e => handleCameraChange(e, "shutterSpeed")}
                   >
                     {
                       shutterSpeeds.map((item, i) => {
@@ -382,8 +357,8 @@ export default function SettingsApp() {
                 <div className="inputContainer">
                   <select
                     className="MessageProtocolDropdown"
-                    value={irisInput}
-                    onChange={e => handleCameraChange(e, setIrisInput)}
+                    value={cameraState.iris}
+                    onChange={e => handleCameraChange(e, "iris")}
                   >
                     {
                       irisValues.map((item, i) => {
@@ -402,8 +377,8 @@ export default function SettingsApp() {
                 <div className="inputContainer">
                   <select
                     className="MessageProtocolDropdown"
-                    value={gainInput}
-                    onChange={e => handleCameraChange(e, setGainInput)}
+                    value={cameraState.gain}
+                    onChange={e => handleCameraChange(e, "gain")}
                   >
                     {
                       gainValues.map((item, i) => {
