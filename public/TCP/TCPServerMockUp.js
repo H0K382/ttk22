@@ -230,7 +230,7 @@ const startServer = () => {
       }
     };
 
-    setInterval(sendData, 3000);
+    setInterval(sendData, 200);
 
     ipcMain.on('rov-mock-up-send-camera-settings', (event, arg) => {
       camera_settings = encode.customCameraMessage({
@@ -245,10 +245,10 @@ const startServer = () => {
       });
       console.log(
         'Received rov-mock-up-send-camera-settings:',
-        arg,
-        camera_settings,
-        decode(camera_settings)
+        arg
       );
+      console.log('Sending camera settings==================================================================');
+      
       socket.write(camera_settings)
     });
   });

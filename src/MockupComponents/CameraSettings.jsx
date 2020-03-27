@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { customCameraMessageMetadata } from '../constants/imcMetadata';
 
 import './css/FromROV.css';
 
@@ -34,14 +33,11 @@ export default function CameraSettings() {
   }
 
   const handleCameraChange = (e, name) => {
-    let tempState = cameraState;
-    tempState[name] = isNaN(Number(e.target.value)) ? 0 : Number(e.target.value);
-    console.log(e.target.value, name)
-    console.log(tempState);
-    setCameraState(tempState);
+    const newCameraState = {...cameraState, [name]: isNaN(Number(e.target.value)) ? 0 : Number(e.target.value)}
+    setCameraState(newCameraState);
     ipcRenderer.send(
       'rov-mock-up-send-camera-settings',
-      cameraState,
+      newCameraState,
     );
   };
 

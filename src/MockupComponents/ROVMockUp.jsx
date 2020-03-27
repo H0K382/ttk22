@@ -10,9 +10,12 @@ import CameraSettings from './CameraSettings';
 
 const { ipcRenderer } = require('electron');
 
+const cameraMessageName = 'customCameraMessage'
+
 export default function ROVMockUp() {
   const [mode, setMode] = useState(modeEnum.MANUAL);
   const [recievedData, setRecievedData] = useState(null);
+  const [lastCameraMessage, setLastCameraMessage] = useState(null);
   const [isServerRunning, setIsServerRunning] = useState(false);
 
   // TODO: add this functionality in TCPServerMockUp
@@ -42,6 +45,9 @@ export default function ROVMockUp() {
     });
     window.ipcRenderer.on('rov-mock-up-send-data', (event, arg) => {
       setRecievedData(arg);
+      if (cameraMessageName in arg) {
+        setLastCameraMessage({cameraMessageName: arg[cameraMessageName]})
+      }
     });
   }, []);
 
@@ -60,6 +66,12 @@ export default function ROVMockUp() {
           IMCActive={true}
           title="From GUI"
           values={recievedData ? recievedData : {}}
+          changeEffect={false}
+        />
+        <Values
+          IMCActive={true}
+          title="Camera message"
+          values={lastCameraMessage ? lastCameraMessage : {}}
           changeEffect={false}
         />
         <div className="recievedData">
