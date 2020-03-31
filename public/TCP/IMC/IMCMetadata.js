@@ -318,11 +318,11 @@ const customCameraMessageMetadata = {
     },
     {
       name: 'iris',
-      datatype: datatypes.uint_16t,
+      datatype: datatypes.uint_8t,
     },
     {
       name: 'gain',
-      datatype: datatypes.uint_16t,
+      datatype: datatypes.uint_8t,
     },
   ],
 };
