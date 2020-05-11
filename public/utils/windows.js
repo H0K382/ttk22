@@ -98,7 +98,7 @@ function setWidthAndHeight() {
   const allDisplays = screen.getAllDisplays();
 
   // Find which screen is the external one
-  let externalDisplay = allDisplays.find(display => {
+  let externalDisplay = allDisplays.find((display) => {
     return display.bounds.x !== 0 || display.bounds.y !== 0;
   });
 
@@ -135,7 +135,7 @@ function createXboxMappingWindow() {
     `file://${path.join(__dirname, '../img/xbox-mappings.png')}`,
   );
   // Handle garbage collection
-  xboxMappingWindow.on('close', function() {
+  xboxMappingWindow.on('close', function () {
     xboxMappingWindow = null;
   });
 
@@ -166,7 +166,7 @@ function createMockupWindow() {
   }
 
   // Handle garbage collection
-  mockupWindow.on('close', function() {
+  mockupWindow.on('close', function () {
     mockupWindow = null;
   });
 
@@ -184,7 +184,7 @@ function createKeyboardMappingWindow() {
     `file://${path.join(__dirname, '../img/keyboard-mappings.png')}`,
   );
   // Handle garbage collection
-  keyboardMappingWindow.on('close', function() {
+  keyboardMappingWindow.on('close', function () {
     keyboardMappingWindow = null;
   });
 
@@ -196,7 +196,7 @@ function createSettingsWindow() {
     title: 'Settings',
     // modal: true,
     // frame: false,
-    parent: controlWindow,
+    // parent: controlWindow,
     // x: xControlWindow + 10,
     // y: yControlWindow + 50,
     // width: 380,
@@ -209,7 +209,7 @@ function createSettingsWindow() {
   });
   settingsWindow.setMenu(null);
 
-  settingsWindow.on('close', function() {
+  settingsWindow.on('close', function () {
     settingsWindow = null;
   });
 

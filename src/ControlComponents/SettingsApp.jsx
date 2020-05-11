@@ -8,15 +8,15 @@ const MessageProtocols = require('../constants/messageProtocols');
 
 const focusMmToString = (mm) => {
   if (mm > 4000) {
-    return 'Over Inf'
+    return 'Over Inf';
   } else if (mm >= 1000) {
-    return `${mm / 1000} m`
+    return `${mm / 1000} m`;
   } else if (mm >= 10) {
-    return `${mm / 10} cm`
+    return `${mm / 10} cm`;
   } else {
-    return `${mm} mm`
+    return `${mm} mm`;
   }
-}
+};
 
 export default function SettingsApp() {
   const {
@@ -46,21 +46,57 @@ export default function SettingsApp() {
   const [mapRotationInput, setMapRotationInput] = useState(mapRotation);
   const [inputsChanged, setInputsChanged] = useState([]);
 
-  const [
-    cameraState,
-    setCameraState,
-  ] = useState(remote.getGlobal('camera'));
+  const [cameraState, setCameraState] = useState(remote.getGlobal('camera'));
   // const [tiltInput, setTiltInput] = useState(tilt);
 
-  const shutterSpeeds = [10000, 6000, 4000, 3000, 2000, 1500, 1000, 725, 500, 350, 250, 180, 125, 100, 90, 60, 30, 15, 8, 4, 2, 1];
-  const focusPositionValues = [10000, 4000, 2000, 1200, 800, 500, 320, 190, 120, 80, 52, 34, 22, 15, 10]
-  const irisValues = [18, 20, 24, 28, 34, 40, 48, 56, 68, 80, 96]
-  const gainValues = [28, 26, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 0]
+  const shutterSpeeds = [
+    10000,
+    6000,
+    4000,
+    3000,
+    2000,
+    1500,
+    1000,
+    725,
+    500,
+    350,
+    250,
+    180,
+    125,
+    100,
+    90,
+    60,
+    30,
+    15,
+    8,
+    4,
+    2,
+    1,
+  ];
+  const focusPositionValues = [
+    10000,
+    4000,
+    2000,
+    1200,
+    800,
+    500,
+    320,
+    190,
+    120,
+    80,
+    52,
+    34,
+    22,
+    15,
+    10,
+  ];
+  const irisValues = [18, 20, 24, 28, 34, 40, 48, 56, 68, 80, 96];
+  const gainValues = [28, 26, 24, 22, 20, 18, 16, 14, 12, 10, 8, 6, 4, 2, 0];
 
   // Function run when an input field is run - updates its state and sets changed-class
   const handleChange = (event, setFunction) => {
     const el = event.target;
-    const value = isNaN(el.value) ? el.value : parseFloat(el.value)
+    const value = isNaN(el.value) ? el.value : parseFloat(el.value);
     setFunction(value);
 
     el.classList.remove('updatedInput');
@@ -72,7 +108,7 @@ export default function SettingsApp() {
 
   // Adds style to inputs that are updated
   const updateStyle = () => {
-    inputsChanged.forEach(input => {
+    inputsChanged.forEach((input) => {
       input.classList.remove('changedInput');
       input.classList.add('updatedInput');
     });
@@ -109,14 +145,24 @@ export default function SettingsApp() {
     const value = isNaN(Number(e.target.value)) ? 0 : Number(e.target.value);
     const newCameraState = { ...cameraState, [name]: value };
     setCameraState(newCameraState);
-    remote.getGlobal('camera')[name] = value
+    remote.getGlobal('camera')[name] = value;
     sendCameraUpdatedMessage();
-  }
+  };
 
   const sendCameraUpdatedMessage = () => {
     updateStyle();
     window.ipcRenderer.send('camera-settings-updated');
-  }
+  };
+
+  const handleTiltChange = (e, name) => {
+    const value = isNaN(Number(e.target.value)) ? 0 : Number(e.target.value);
+    console.log(value);
+    const newCameraState = { ...cameraState, [name]: value };
+    setCameraState(newCameraState);
+    remote.getGlobal('camera')[name] = value;
+    updateStyle();
+    window.ipcRenderer.send('tilt-updated');
+  };
 
   return (
     <div className="SettingsApp">
@@ -128,7 +174,7 @@ export default function SettingsApp() {
           <div className="inputContainer">
             <input
               value={portInput}
-              onChange={e => handleChange(e, setPortInput)}
+              onChange={(e) => handleChange(e, setPortInput)}
             ></input>
             <div className="inputStatus"></div>
           </div>
@@ -139,7 +185,7 @@ export default function SettingsApp() {
           <div className="inputContainer">
             <input
               value={hostInput}
-              onChange={e => handleChange(e, setHostInput)}
+              onChange={(e) => handleChange(e, setHostInput)}
             ></input>
             <div className="inputStatus"></div>
           </div>
@@ -151,7 +197,7 @@ export default function SettingsApp() {
             <div className="inputContainer">
               <input
                 value={hostInput}
-                onChange={e => handleChange(e, setHostInput)}
+                onChange={(e) => handleChange(e, setHostInput)}
               ></input>
               <div className="inputStatus"></div>
             </div>
@@ -165,7 +211,7 @@ export default function SettingsApp() {
               <select
                 className="MessageProtocolDropdown"
                 value={messageProtocolInput}
-                onChange={e => handleChange(e, setMessageProtocolInput)}
+                onChange={(e) => handleChange(e, setMessageProtocolInput)}
               >
                 <option value={MessageProtocols.OLD}>OLD</option>
                 <option value={MessageProtocols.IMC}>IMC</option>
@@ -188,7 +234,7 @@ export default function SettingsApp() {
                 step={1}
                 min={0}
                 max={360}
-                onChange={e => handleChange(e, setHeadingInput)}
+                onChange={(e) => handleChange(e, setHeadingInput)}
               />
               <div className="inputStatus"></div>
             </div>
@@ -226,13 +272,15 @@ export default function SettingsApp() {
               <select
                 className="MessageProtocolDropdown"
                 value={cameraState.zoom}
-                onChange={e => handleCameraChange(e, "zoom")}
+                onChange={(e) => handleCameraChange(e, 'zoom')}
               >
-                {
-                  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => {
-                    return <option value={item} key={i}>{item}x</option>
-                  })
-                }
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => {
+                  return (
+                    <option value={item} key={i}>
+                      {item}x
+                    </option>
+                  );
+                })}
               </select>
               <div className="inputStatus"></div>
             </div>
@@ -246,7 +294,7 @@ export default function SettingsApp() {
               <select
                 className="MessageProtocolDropdown"
                 value={cameraState.focusMode}
-                onChange={e => handleCameraChange(e, "focusMode")}
+                onChange={(e) => handleCameraChange(e, 'focusMode')}
               >
                 <option value={0}>Automatic</option>
                 <option value={1}>Manual</option>
@@ -263,13 +311,15 @@ export default function SettingsApp() {
               <select
                 className="MessageProtocolDropdown"
                 value={cameraState.focusPosition}
-                onChange={e => handleCameraChange(e, "focusPosition")}
+                onChange={(e) => handleCameraChange(e, 'focusPosition')}
               >
-                {
-                  focusPositionValues.map((item, i) => {
-                    return <option value={item} key={i}>{focusMmToString(item)}</option>
-                  })
-                }
+                {focusPositionValues.map((item, i) => {
+                  return (
+                    <option value={item} key={i}>
+                      {focusMmToString(item)}
+                    </option>
+                  );
+                })}
               </select>
               <div className="inputStatus"></div>
             </div>
@@ -283,7 +333,7 @@ export default function SettingsApp() {
               <select
                 className="MessageProtocolDropdown"
                 value={cameraState.exposureMode}
-                onChange={e => handleCameraChange(e, "exposureMode")}
+                onChange={(e) => handleCameraChange(e, 'exposureMode')}
               >
                 <option value={0}>Automatic</option>
                 <option value={1}>Manual</option>
@@ -300,13 +350,15 @@ export default function SettingsApp() {
               <select
                 className="MessageProtocolDropdown"
                 value={cameraState.shutterSpeed}
-                onChange={e => handleCameraChange(e, "shutterSpeed")}
+                onChange={(e) => handleCameraChange(e, 'shutterSpeed')}
               >
-                {
-                  shutterSpeeds.map((item, i) => {
-                    return <option value={item} key={i}>1/{item}</option>
-                  })
-                }
+                {shutterSpeeds.map((item, i) => {
+                  return (
+                    <option value={item} key={i}>
+                      1/{item}
+                    </option>
+                  );
+                })}
               </select>
               <div className="inputStatus"></div>
             </div>
@@ -320,13 +372,15 @@ export default function SettingsApp() {
               <select
                 className="MessageProtocolDropdown"
                 value={cameraState.iris}
-                onChange={e => handleCameraChange(e, "iris")}
+                onChange={(e) => handleCameraChange(e, 'iris')}
               >
-                {
-                  irisValues.map((item, i) => {
-                    return <option value={item} key={i}>F{item / 10}</option>
-                  })
-                }
+                {irisValues.map((item, i) => {
+                  return (
+                    <option value={item} key={i}>
+                      F{item / 10}
+                    </option>
+                  );
+                })}
               </select>
               <div className="inputStatus"></div>
             </div>
@@ -334,30 +388,96 @@ export default function SettingsApp() {
         </div>
 
         <div className="settingGroup">
-
           <div className="MessageProtocolMenu">
             <label>Gain</label>
             <div className="inputContainer">
               <select
                 className="MessageProtocolDropdown"
                 value={cameraState.gain}
-                onChange={e => handleCameraChange(e, "gain")}
+                onChange={(e) => handleCameraChange(e, 'gain')}
               >
-                {
-                  gainValues.map((item, i) => {
-                    return <option value={item} key={i}>{item} step</option>
-                  })
-                }
+                {gainValues.map((item, i) => {
+                  return (
+                    <option value={item} key={i}>
+                      {item} step
+                    </option>
+                  );
+                })}
+              </select>
+              <div className="inputStatus"></div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          className="updateSettingsBtn"
+          onClick={sendCameraUpdatedMessage}
+        >
+          RESEND CAMERA MESSAGE
+        </button>
+      </div>
+      <div className="generalSettings">
+        <h2>Tilt</h2>
+        <div className="settingGroup">
+          <div className="MessageProtocolMenu">
+            <label>Tilt</label>
+            <div className="inputContainer">
+              <select
+                className="MessageProtocolDropdown"
+                value={cameraState.tilt}
+                onChange={(e) => handleTiltChange(e, 'tilt')}
+              >
+                {[
+                  90,
+                  85,
+                  80,
+                  75,
+                  70,
+                  65,
+                  60,
+                  55,
+                  50,
+                  45,
+                  40,
+                  35,
+                  30,
+                  25,
+                  20,
+                  15,
+                  10,
+                  5,
+                  0,
+                  -5,
+                  -10,
+                  -15,
+                  -20,
+                  -25,
+                  -30,
+                  -35,
+                  -40,
+                  -45,
+                  -50,
+                  -55,
+                  -60,
+                  -65,
+                  -70,
+                  -75,
+                  -80,
+                  -85,
+                  -90,
+                ].map((item, i) => {
+                  return (
+                    <option value={(Math.PI * item) / 180} key={i}>
+                      {item}°
+                    </option>
+                  );
+                })}
               </select>
               <div className="inputStatus"></div>
             </div>
           </div>
         </div>
       </div>
-
-      <button className="updateSettingsBtn" onClick={sendCameraUpdatedMessage}>
-        SEND
-      </button>
-    </div >
+    </div>
   );
 }

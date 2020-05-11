@@ -89,12 +89,12 @@ const customCameraMessage = {
   exposure_mode: 1,
   shutter_speed: 1000,
   iris: 28,
-  gain: 5
+  gain: 5,
 };
 
 const setServoPosition = {
   id: 1,
-  value: 0.785,
+  value: 0.3490658503988659,
 };
 
 describe('test IMC encoding', () => {
@@ -224,7 +224,8 @@ describe('test IMC encode and decode', () => {
   });
 
   test('setServoPosition', () => {
-    const encoded = decode(encode.setServoPosition(setServoPosition));    
+    const encoded = decode(encode.setServoPosition(setServoPosition));
+    console.log(encoded);
 
     expect(encoded[messages.setServoPosition]).toBeDeepCloseTo(
       setServoPosition,

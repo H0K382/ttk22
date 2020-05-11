@@ -30,9 +30,17 @@ function setIPCListeners() {
   // Listen to update camera settings
   ipcMain.on('camera-settings-updated', () => {
     // To resolve circular import. TODO: Should probably be handled in a better way
-    const { sendCameraSettings } = require('./../TCP/TCPClient')
-  
+    const { sendCameraSettings } = require('./../TCP/TCPClient');
+
     sendCameraSettings();
+  });
+
+  // Listen to update camera tilt
+  ipcMain.on('tilt-updated', () => {
+    // To resolve circular import. TODO: Should probably be handled in a better way
+    const { sendCameraTilt } = require('./../TCP/TCPClient');
+
+    sendCameraTilt();
   });
 }
 

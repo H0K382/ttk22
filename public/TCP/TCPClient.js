@@ -2,7 +2,7 @@ const net = require('net');
 const { encodeData, decodeData } = require('./coding');
 const { encode, decode, messages } = require('./IMC/IMC');
 const { sendVibrationRequest } = require('./../controls/mapping');
-const { sendMessage } = require('../utils/IPC')
+const { sendMessage } = require('../utils/IPC');
 
 const messageLength = 256;
 
@@ -28,7 +28,7 @@ function getConnectedClient() {
     host: global.settings.host,
   });
 
-  client.on('connect', function() {
+  client.on('connect', function () {
     console.log(`Client: connection established with server!`);
 
     if (messageProtocol === messageProtocols.old) {
@@ -48,7 +48,7 @@ function getConnectedClient() {
   });
 
   // Handles receiving data
-  client.on('data', function(buf) {
+  client.on('data', function (buf) {
     try {
       if (messageProtocol === messageProtocols.old) {
         let data = decodeData(buf);
@@ -64,12 +64,7 @@ function getConnectedClient() {
       }
     } catch (error) {
       console.log('Unable to decode message:');
-      console.log(
-        `Buffer: ${buf
-          .toString('hex')
-          .match(/../g)
-          .join(' ')}`,
-      );
+      console.log(`Buffer: ${buf.toString('hex').match(/../g).join(' ')}`);
       console.log(`Buffer length: ${buf.length}`);
 
       console.log(error.message);
@@ -77,7 +72,7 @@ function getConnectedClient() {
   });
 
   // Tries to connect again if server is not opened yet
-  client.on('error', function(err) {
+  client.on('error', function (err) {
     const { code } = err;
     if (code === 'ECONNREFUSED') {
       if (connectionAttempts < limitAttempts) {
@@ -151,23 +146,40 @@ function decodeImcData(buf) {
   if (messages.customCameraMessage in recievedData) {
     decodeCameraMessage(recievedData[messages.customCameraMessage]);
   }
+  if (messages.setServoPosition in recievedData) {
+    decodeCameraTilt(recievedData[messages.setServoPosition]);
+  }
+
   return recievedData;
 }
 
 function decodeCameraMessage(cameraMessage) {
   console.log(cameraMessage);
-  
-  global.cameraSettingsRecieved.id = cameraMessage.id,
-  global.cameraSettingsRecieved.zoom = cameraMessage.zoom,
-  global.cameraSettingsRecieved.focusMode = cameraMessage.focus_mode, // autofocus
-  global.cameraSettingsRecieved.focusPosition = cameraMessage.focus_position, // mm
-  global.cameraSettingsRecieved.exposureMode = cameraMessage.exposure_mode, // auto
-  global.cameraSettingsRecieved.shutterSpeed = cameraMessage.shutter_speed, // 1/s
-  global.cameraSettingsRecieved.iris = cameraMessage.iris, // 10 x f-number
-  global.cameraSettingsRecieved.gain = cameraMessage.gain,
 
-  console.log('Global camera settings recieved:',global.cameraSettingsRecieved );
-  
+  global.cameraSettingsRecieved.id = cameraMessage.id;
+  global.cameraSettingsRecieved.zoom = cameraMessage.zoom;
+  global.cameraSettingsRecieved.focusMode = cameraMessage.focus_mode; // autofocus
+  global.cameraSettingsRecieved.focusPosition = cameraMessage.focus_position; // mm
+  global.cameraSettingsRecieved.exposureMode = cameraMessage.exposure_mode; // auto
+  global.cameraSettingsRecieved.shutterSpeed = cameraMessage.shutter_speed; // 1/s
+  global.cameraSettingsRecieved.iris = cameraMessage.iris; // 10 x f-number
+  global.cameraSettingsRecieved.gain = cameraMessage.gain;
+
+  console.log(
+    'Global camera settings recieved:',
+    global.cameraSettingsRecieved,
+  );
+
+  sendMessage('camera-settings-recieved', 'control');
+}
+
+function decodeCameraTilt(setServoPositionMessage) {
+  console.log(`Decoding camera tilt message:`, setServoPositionMessage);
+  const rounded_tilt_in_degrees =
+    Math.round(
+      ((180 * setServoPositionMessage.value) / Math.PI + Number.EPSILON) * 100,
+    ) / 100;
+  global.cameraSettingsRecieved.tilt = rounded_tilt_in_degrees;
   sendMessage('camera-settings-recieved', 'control');
 }
 
@@ -275,11 +287,21 @@ function sendCameraSettings() {
     exposure_mode: global.camera.exposureMode,
     shutter_speed: global.camera.shutterSpeed,
     iris: global.camera.iris,
-    gain: global.camera.gain
-  })
+    gain: global.camera.gain,
+  });
   // console.log('Sending camera setting');
   // console.log(global.camera);
-  client.write(buf)
+  client.write(buf);
+}
+
+function sendCameraTilt() {
+  buf = encode.setServoPosition({
+    id: global.camera.id,
+    value: global.camera.tilt,
+  });
+  // console.log('Sending sendCameraTilt');
+  // console.log(global.camera);
+  client.write(buf);
 }
 
 // Checks if currentmode is available
@@ -300,4 +322,11 @@ function setSafetyControls() {
   sendVibrationRequest(false); // Sends hard vibration to gamepad
 }
 
-module.exports = { getConnectedClient, sendData, sendIMCData, decodeImcData, sendCameraSettings };
+module.exports = {
+  getConnectedClient,
+  sendData,
+  sendIMCData,
+  decodeImcData,
+  sendCameraSettings,
+  sendCameraTilt,
+};

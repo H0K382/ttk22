@@ -3,8 +3,9 @@ const { encode, decode, messages } = require('./IMC/IMC');
 const { ipcMain } = require('electron');
 
 const port = 5000;
-
 const messageLength = 256;
+const sendInterval = 200;
+// const sendInterval = 5000;
 
 // States for IMC ==============================================
 /* eslint-disable no-unused-vars */
@@ -137,10 +138,10 @@ const ipcCommunicationTCPServer = () => {
 const startServer = () => {
   console.log(`Waiting for client to connect to port ${port}`);
 
-  const server = new net.createServer(socket => {
+  const server = new net.createServer((socket) => {
     console.log(`TCP Server bound to port ${port}.`);
 
-    socket.on('data', buf => {
+    socket.on('data', (buf) => {
       console.log(`[${Date.now()}] Recieved data from client:`);
       const recievedData = decode(buf);
       try {
@@ -154,7 +155,7 @@ const startServer = () => {
         return;
       }
       console.log(decode(buf));
-      Object.keys(recievedData).map(message => {
+      Object.keys(recievedData).map((message) => {
         switch (message) {
           case messages.desiredControl:
             // Is in manual mode
@@ -230,7 +231,7 @@ const startServer = () => {
       }
     };
 
-    setInterval(sendData, 200);
+    setInterval(sendData, sendInterval);
 
     ipcMain.on('rov-mock-up-send-camera-settings', (event, arg) => {
       camera_settings = encode.customCameraMessage({
@@ -241,15 +242,28 @@ const startServer = () => {
         exposure_mode: arg.exposureMode,
         shutter_speed: arg.shutterSpeed,
         iris: arg.iris,
-        gain: arg.gain
+        gain: arg.gain,
       });
+      console.log('Received rov-mock-up-send-camera-settings:', arg);
       console.log(
-        'Received rov-mock-up-send-camera-settings:',
-        arg
+        'Sending camera settings==================================================================',
       );
-      console.log('Sending camera settings==================================================================');
-      
-      socket.write(camera_settings)
+
+      socket.write(camera_settings);
+    });
+
+    ipcMain.on('rov-mock-up-send-camera-tilt', (event, value) => {
+      camera_tilt = encode.setServoPosition({
+        id: 1,
+        value: value,
+      });
+      console.log('Received rov-mock-up-send-camera-tilt:', value);
+      console.log(
+        'Sending camera settings==================================================================',
+      );
+      console.log('Decoded at mock up:', decode(camera_tilt));
+
+      socket.write(camera_tilt);
     });
   });
 
