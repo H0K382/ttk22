@@ -54,7 +54,7 @@ export const customEstimatedStateMetadata = {
 };
 
 export const entityStateMetadata = {
-  length: 8,
+  length: 10,
   id: {
     value: 1,
     datatype: datatypes.uint_16t,
@@ -127,6 +127,10 @@ export const lowLevelControlManeuverMetadata = {
       name: 'duration',
       datatype: datatypes.uint_16t,
     },
+    {
+      name: 'custom',
+      datatype: datatypes.uint_16t,
+    },
   ],
 };
 
@@ -196,7 +200,7 @@ export const customGoToMetadata = {
 export const netFollowMetadata = {
   length: 33,
   id: {
-    value: 465,
+    value: 1007,
     datatype: datatypes.uint_16t,
   },
   message: [

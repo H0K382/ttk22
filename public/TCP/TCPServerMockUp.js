@@ -26,28 +26,28 @@ let entityState = {
   },
 };
 
-let customEstimatedState = {
-  x: 0.0,
-  y: 0,
-  z: 0,
+let EstimatedState = {
+  N: 0.0,
+  E: 0,
+  D: 0,
   phi: 0,
   theta: 0,
   psi: 0,
   u: 0,
   v: 0,
   w: 0,
-  vx: 0,
-  vy: 0,
-  vz: 0,
+  N_dt: 0,
+  E_dt: 0,
+  D_dt: 0,
   p: 0,
   q: 0,
   r: 0,
 };
 
 let customNetFollow = {
-  d: 132,
-  v: 1.1,
-  angle: 2.2,
+  distance: 132,
+  velocity: 1.1,
+  net_heading: 2.2,
 };
 // FROM ROV END ========================================
 
@@ -74,10 +74,12 @@ let lowLevelControlManeuver = {
   desiredHeading: {
     control: { value: 0, z_units: 0 },
     duration: 0,
+    custom: 0,
   },
   desiredZ: {
     control: { value: 0, z_units: 0 },
     duration: 0,
+    custom: 0,
   },
 };
 // MANUAL MODE END
@@ -95,9 +97,9 @@ let customGoTo = {
 // NF MODE
 let netFollow = {
   timeout: 132,
-  d: 1.1,
-  v: 2.2,
-  z: 3.3,
+  distance: 1.1,
+  velocity: 2.2,
+  depth: 3.3,
   z_units: 3,
 };
 // NF MODE END
@@ -110,10 +112,10 @@ const ipcCommunicationTCPServer = () => {
   console.log('Starting ipcCommunicationTCPServer');
 
   ipcMain.on('rov-mock-up-send-custom-estimated-state', (event, arg) => {
-    customEstimatedState = arg;
+    EstimatedState = arg;
     console.log(
       'Received rov-mock-up-send-custom-estimated-state:',
-      customEstimatedState,
+      EstimatedState,
     );
   });
 
@@ -208,11 +210,11 @@ const startServer = () => {
     const sendData = () => {
       // Create IMC message with estimated state and entity state
       console.log(`[${Date.now()}] Sending IMC message:`);
-      console.log(customEstimatedState);
+      console.log(EstimatedState);
       console.log(entityState);
 
       let buf = encode.combine([
-        encode.customEstimatedState(customEstimatedState),
+        encode.EstimatedState(EstimatedState),
         encode.entityState(entityState),
       ]);
 

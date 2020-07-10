@@ -54,18 +54,18 @@ const customEstimatedStateMetadata = {
     datatype: datatypes.uint_16t,
   },
   message: [
-    { name: 'x', datatype: datatypes.fp32_t },
-    { name: 'y', datatype: datatypes.fp32_t },
-    { name: 'z', datatype: datatypes.fp32_t },
+    { name: 'N', datatype: datatypes.fp32_t },
+    { name: 'E', datatype: datatypes.fp32_t },
+    { name: 'D', datatype: datatypes.fp32_t },
     { name: 'phi', datatype: datatypes.fp32_t },
     { name: 'theta', datatype: datatypes.fp32_t },
     { name: 'psi', datatype: datatypes.fp32_t },
     { name: 'u', datatype: datatypes.fp32_t },
     { name: 'v', datatype: datatypes.fp32_t },
     { name: 'w', datatype: datatypes.fp32_t },
-    { name: 'vx', datatype: datatypes.fp32_t },
-    { name: 'vy', datatype: datatypes.fp32_t },
-    { name: 'vz', datatype: datatypes.fp32_t },
+    { name: 'N_dt', datatype: datatypes.fp32_t },
+    { name: 'E_dt', datatype: datatypes.fp32_t },
+    { name: 'D_dt', datatype: datatypes.fp32_t },
     { name: 'p', datatype: datatypes.fp32_t },
     { name: 'q', datatype: datatypes.fp32_t },
     { name: 'r', datatype: datatypes.fp32_t },
@@ -75,7 +75,7 @@ const customEstimatedStateMetadata = {
 const entityStateMetadata = {
   // https://www.lsts.pt/docs/imc/imc-5.4.11/Core.html#entity-state
   name: messages.entityState,
-  length: 8,
+  length: 6,
   id: {
     value: 1,
     datatype: datatypes.uint_16t,
@@ -89,7 +89,7 @@ const entityStateMetadata = {
     },
     {
       name: 'description',
-      datatype: datatypes.uint_32t,
+      datatype: datatypes.uint_16t,
       value: 131072,
     },
   ],
@@ -188,6 +188,10 @@ const lowLevelControlManeuverMetadata = {
       name: 'duration',
       datatype: datatypes.uint_16t,
     },
+    {
+      name: 'custom',
+      datatype: datatypes.uint_16t,
+    },
   ],
 };
 
@@ -228,7 +232,7 @@ const netFollowMetadata = {
   name: messages.netFollow,
   length: 33,
   id: {
-    value: 465,
+    value: 1007,
     datatype: datatypes.uint_16t,
   },
   message: [
@@ -242,15 +246,15 @@ const netFollowMetadata = {
       value: 151110,
     },
     {
-      name: 'd',
+      name: 'distance',
       datatype: datatypes.fp64_t,
     },
     {
-      name: 'v',
+      name: 'velocity',
       datatype: datatypes.fp64_t,
     },
     {
-      name: 'z',
+      name: 'depth',
       datatype: datatypes.fp64_t,
     },
     {
@@ -270,15 +274,15 @@ const customNetFollowStateMetadata = {
   },
   message: [
     {
-      name: 'd',
+      name: 'distance',
       datatype: datatypes.fp32_t,
     },
     {
-      name: 'v',
+      name: 'velocity',
       datatype: datatypes.fp32_t,
     },
     {
-      name: 'angle',
+      name: 'net_heading',
       datatype: datatypes.fp64_t,
     },
   ],

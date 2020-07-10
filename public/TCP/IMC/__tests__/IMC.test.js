@@ -17,15 +17,15 @@ expect.extend({ toBeDeepCloseTo, toMatchCloseTo });
 const decimalError = 5;
 
 const customEstimatedState = {
-  x: 0.0,
-  y: 0,
-  z: 0,
+  N: 0.0,
+  E: 0,
+  D: 0,
   phi: 0,
   theta: 0,
   psi: 0,
-  u: 0,
-  v: 0,
-  w: 0,
+  N_dt: 0,
+  E_dt: 0,
+  D_dt: 0,
   vx: 0,
   vy: 0,
   vz: 0,
@@ -69,16 +69,16 @@ const customGoTo = {
 
 const netFollow = {
   timeout: 132,
-  d: 1.1,
-  v: 2.2,
-  z: 3.3,
+  distance: 1.1,
+  velocity: 2.2,
+  depth: 3.3,
   z_units: 3,
 };
 
 const customNetFollow = {
-  d: 132,
-  v: 1.1,
-  angle: 2.2,
+  distance: 132,
+  velocity: 1.1,
+  net_heading: 2.2,
 };
 
 const customCameraMessage = {

@@ -74,6 +74,7 @@ function encodeLowLevelControlManeuver(
   controlManeuver,
   controlManeuverMetadata,
   duration,
+  custom = 0,
 ) {
   let controlManeuverId = getIdBuffer(controlManeuverMetadata.id.value);
   let controlBuf = encodeImcMessage(controlManeuver, controlManeuverMetadata);
@@ -82,7 +83,11 @@ function encodeLowLevelControlManeuver(
   let durationBuf = Buffer.alloc(2);
   durationBuf.writeInt16BE(duration, 0);
 
-  let resultBuf = Buffer.concat([controlManeuverId, controlBuf, durationBuf]);
+  // Add custom setting
+  let customBuf = Buffer.alloc(2);
+  durationBuf.writeInt16BE(custom, 0);
+
+  let resultBuf = Buffer.concat([controlManeuverId, controlBuf, durationBuf, customBuf]);
 
   // Add header
   let headerBuf = encodeAqueousHeader(
@@ -100,17 +105,23 @@ function encodeLowLevelControlManeuver(
  * This function will decode possiblely multiple messages as long as they are concatinated without spacing.
  * It will handle padding of the buffer as long as the padding consist of zeros.
  * @param {Buffer} buf Buffer to decode
+ * @param {boolean} bigEndian true -> BE, false -> LE
  *
  * @returns {{[key: string]: Object}} Object with IMC message as key (use `messages` to recieve the messages)
  */
-function decode(buf) {
+function decode(buf, bigEndian = false) {
   let result = {};
   let offset = 0;
   let msg, name;
   do {
     // No more messages
-    if (buf.readUInt16BE(offset) === 0) break;
-    [msg, offset, name] = decodeImcMessage(buf, offset);
+    if (bigEndian){
+      if (buf.readUInt16BE(offset) === 0) break;
+    }
+    else {
+      if (buf.readUInt16LE(offset) === 0) break;
+    }
+    [msg, offset, name] = decodeImcMessage(buf, offset, bigEndian);
     // Add two bytes for footer
     offset += 2;
     result[name] = msg;
@@ -118,17 +129,22 @@ function decode(buf) {
   return result;
 }
 
-function decodeImcMessage(buf, offset = 0, name = '', hasHeader = true) {
+function decodeImcMessage(buf, offset = 0, bigEndian, name = '', hasHeader = true) {
   let result = {};
   let id;
 
   // Get information from id
   if (hasHeader) {
-    const header = decodeHeader(buf, offset);
+    const header = decodeHeader(buf, offset, bigEndian);
     id = header.mgid;
     offset += HEADER_LENGTH;
   } else {
-    id = buf.readUInt16BE(offset);
+    if (bigEndian) {
+      id = buf.readUInt16BE(offset);
+    }
+    else {
+      id = buf.readUInt16LE(offset);
+    }
     offset += 2;
   }
   
@@ -140,33 +156,69 @@ function decodeImcMessage(buf, offset = 0, name = '', hasHeader = true) {
     if (!Object.prototype.hasOwnProperty.call(imcEntity, 'value')) {
       switch (imcEntity.datatype) {
         case datatypes.uint_8t:
-          result[imcEntity.name] = buf.readUIntBE(
+          if (bigEndian) {
+            result[imcEntity.name] = buf.readUIntBE(
+              offset,
+              datatypes.uint_8t.length,
+            );
+          }
+          else {
+            result[imcEntity.name] = buf.readUIntLE(
             offset,
-            datatypes.uint_8t.length,
-          );
+            datatypes.uint_8t.length,);
+          }
           break;
         case datatypes.uint_16t:
-          result[imcEntity.name] = buf.readUInt16BE(offset);
+          if (bigEndian) {
+            result[imcEntity.name] = buf.readUInt16BE(offset);
+          }
+          else {
+            result[imcEntity.name] = buf.readUInt16LE(offset);
+          }
           break;
         case datatypes.uint_32t:
-          result[imcEntity.name] = buf.readUInt32BE(offset);
+          if (bigEndian) {
+            result[imcEntity.name] = buf.readUInt32BE(offset);
+          }
+          else {
+            result[imcEntity.name] = buf.readUInt32LE(offset);
+          }
           break;
         case datatypes.fp32_t:
-          result[imcEntity.name] = buf.readFloatBE(offset);
+          if (bigEndian) {
+            result[imcEntity.name] = buf.readFloatBE(offset);
+          }
+          else {
+            result[imcEntity.name] = buf.readFloatLE(offset);
+          }
           break;
         case datatypes.fp64_t:
-          result[imcEntity.name] = buf.readDoubleBE(offset);
+          if (bigEndian) {
+            result[imcEntity.name] = buf.readDoubleBE(offset);
+          }
+          else {
+            result[imcEntity.name] = buf.readDoubleLE(offset);
+          }
           break;
         case datatypes.bitfield:
-          result[imcEntity.name] = uIntBEToBitfield(
-            buf.readUIntBE(offset, datatypes.bitfield.length),
-            imcEntity.fields,
-          );
+          if (bigEndian) {
+            result[imcEntity.name] = uIntBEToBitfield(
+              buf.readUIntBE(offset, datatypes.bitfield.length),
+              imcEntity.fields,
+            );
+          }
+          else {
+            result[imcEntity.name] = uIntBEToBitfield(
+              buf.readUIntLE(offset, datatypes.bitfield.length),
+              imcEntity.fields,
+            );
+          }
           break;
         case datatypes.recursive:
           [result[imcEntity.name], offset, name] = decodeImcMessage(
             buf,
             offset,
+            bigEndian,
             name,
             false,
           );
@@ -234,7 +286,7 @@ const idToMessageMetadata = {
   401: desiredZMetadata,
   455: lowLevelControlManeuverMetadata,
   1004: customGoToMetadata,
-  465: netFollowMetadata,
+  1007: netFollowMetadata,
   1002: customNetFollowStateMetadata,
   1005: customCameraMessageMetadata,
   302: setServoPositionMetadata

@@ -5,9 +5,9 @@ const { ipcRenderer } = require('electron');
 
 export default function NFView() {
   const [customNfStateMessage, setcustomNfStateMessage] = useState({
-    d: 0,
-    v: 0,
-    angle: 0,
+    distance: 0,
+    velocity: 0,
+    net_heading: 0,
   });
 
   function changeCustomNfState(value, name) {

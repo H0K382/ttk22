@@ -6,29 +6,31 @@ import { fixValue } from '../utils/utils';
 
 const dictionary = {
   // Desired control Values
-  x: 'north',
-  y: 'east',
-  z: 'down',
-  k: 'roll',
-  m: 'pitch',
-  n: 'yaw',
+  x: 'X',
+  y: 'Y',
+  z: 'Z',
+  k: 'K',
+  m: 'M',
+  n: 'N',
 
   // Net following values
   timeout: 'Time',
-  d: 'Dist.',
+  d: 'Distance',
   z_units: 'Down u.',
+  net_heading: "Net angle",
 
   // Custom Estimated state values
 
   // Messages
   desiredControl: 'Desired Control',
-  'lowLevelControlManeuver.desiredZ': 'LLCM Desired Depth',
-  'lowLevelControlManeuver.desiredHeading': 'LLCM Desired Heading',
+  'lowLevelControlManeuver.desiredZ': 'Desired Depth',
+  'lowLevelControlManeuver.desiredHeading': 'Desired Heading',
   netFollow: 'Net Following',
-  customGoTo: 'Custom GoTo',
-  customEstimatedState: 'Custom Estimated State',
-  entityState: 'Entity State',
-  customNetFollowState: 'Custom Net Follow State',
+  customGoTo: 'Dynamic Positioning',
+  customEstimatedState: 'Estimated State',
+  entityState: 'ROV Mode',
+  customNetFollowState: 'Net Following State',
+  setServoPosition: 'Camera tilt angle',
 };
 
 export default function MessageGroup({ msgName, data, flags, changeEffect }) {

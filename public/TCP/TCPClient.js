@@ -111,7 +111,7 @@ function sendData(client, data) {
 }
 
 function decodeImcData(buf) {
-  const recievedData = decode(buf);
+  const recievedData = decode(buf, false);
 
   // Update mode
   /*
@@ -134,9 +134,9 @@ function decodeImcData(buf) {
   if (messages.customEstimatedState in recievedData) {
     const customEstimatedState = recievedData[messages.customEstimatedState];
     global.fromROV = {
-      north: customEstimatedState.x,
-      east: customEstimatedState.y,
-      down: customEstimatedState.z,
+      north: customEstimatedState.N,
+      east: customEstimatedState.E,
+      down: customEstimatedState.D,
       roll: customEstimatedState.phi,
       pitch: customEstimatedState.theta,
       yaw: customEstimatedState.psi,
@@ -154,7 +154,6 @@ function decodeImcData(buf) {
 }
 
 function decodeCameraMessage(cameraMessage) {
-  console.log(cameraMessage);
 
   global.cameraSettingsRecieved.id = cameraMessage.id;
   global.cameraSettingsRecieved.zoom = cameraMessage.zoom;
@@ -165,16 +164,10 @@ function decodeCameraMessage(cameraMessage) {
   global.cameraSettingsRecieved.iris = cameraMessage.iris; // 10 x f-number
   global.cameraSettingsRecieved.gain = cameraMessage.gain;
 
-  console.log(
-    'Global camera settings recieved:',
-    global.cameraSettingsRecieved,
-  );
-
   sendMessage('camera-settings-recieved', 'control');
 }
 
 function decodeCameraTilt(setServoPositionMessage) {
-  console.log(`Decoding camera tilt message:`, setServoPositionMessage);
   const rounded_tilt_in_degrees =
     Math.round(
       ((180 * setServoPositionMessage.value) / Math.PI + Number.EPSILON) * 100,
@@ -212,7 +205,7 @@ function sendIMCData(client) {
         y: false,
         z: global.toROV.autodepth,
         k: true,
-        m: false,
+        m: true,
         n: global.toROV.autoheading,
       },
     };
@@ -268,14 +261,15 @@ function sendIMCData(client) {
 */
     buf = encode.netFollow({
       timeout: 10,
-      d: global.netfollowing.distance,
-      v: global.netfollowing.velocity,
-      z: global.netfollowing.depth,
+      distance: global.netfollowing.distance,
+      velocity: global.netfollowing.velocity,
+      depth: global.netfollowing.depth,
       z_units: 0,
     });
   }
   client.write(encode.combine([buf], messageLength));
-  return decode(buf);
+  
+  return decode(buf, true);
 }
 
 function sendCameraSettings() {

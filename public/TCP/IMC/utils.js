@@ -159,10 +159,11 @@ function encodeAqueousHeader(mgid, size) {
  * Decodes IMC header.
  * @param {Buffer} buf Buffer to decode
  * @param {number} offset Offet in bytes to start parsing heading
+ * @param {boolean} bigEndian True if bytes are big endian, false for small endian
  *
  * @returns {ImcHeader} Object containing IMC header values
  */
-function decodeHeader(buf, offset) {
+function decodeHeader(buf, offset, bigEndian) {
   /** @type {ImcHeader} */
   const header = {
     sync: null,
@@ -175,28 +176,69 @@ function decodeHeader(buf, offset) {
     dst_ent: null,
   };
   // Synchronization Number uint16_t
-  header.sync = buf.readUInt16BE(offset);
+  if(bigEndian) {
+    header.sync = buf.readUInt16BE(offset);
+  }
+  else {
+    header.sync = buf.readUInt16LE(offset);
+  } 
   offset += 2;
   // Message Identification Number uint16_t
-  header.mgid = buf.readUInt16BE(offset);
+  if(bigEndian) {
+    header.mgid = buf.readUInt16BE(offset);
+  }
+  else {
+    header.mgid = buf.readUInt16LE(offset);
+  } 
   offset += 2;
   // Message size uint16_t
-  header.size = buf.readUInt16BE(offset);
+  if(bigEndian) {
+    header.size = buf.readUInt16BE(offset);
+  }
+  else {
+    header.size = buf.readUInt16LE(offset);
+  } 
   offset += 2;
   // Time stamp fp64_t
-  header.timestamp = buf.readDoubleBE(offset);
+  if(bigEndian) {
+    header.timestamp = buf.readDoubleBE(offset);
+  }
+  else {
+    header.timestamp = buf.readDoubleLE(offset);
+  } 
   offset += 8;
   // Source Address uint16_t
-  header.src = buf.readUInt16BE(offset);
+  if(bigEndian) {
+    header.src = buf.readUInt16BE(offset);
+  }
+  else {
+    header.src = buf.readUInt16LE(offset);
+  } 
   offset += 2;
-  // Source Entity uint8_t
-  header.src_ent = buf.readUIntBE(offset, 1);
+  // Source Entity uint8_t;
+  if(bigEndian) {
+    header.src_ent = buf.readUInt16BE(offset,1);
+  }
+  else {
+    header.src_ent = buf.readUInt16LE(offset,1);
+  } 
   offset += 1;
   // Destination Address uint16_t
-  header.dst = buf.readUInt16BE(offset);
+  if(bigEndian) {
+    header.dst = buf.readUInt16BE(offset);
+  }
+  else {
+    header.dst = buf.readUInt16LE(offset);
+  } 
   offset += 2;
   // Destination Entity uint8_t
-  header.dst_ent = buf.readUIntBE(offset, 1);
+  if(bigEndian) {
+    header.dst_ent = buf.readUInt16BE(offset,1);
+  }
+  else {
+    header.dst_ent = buf.readUInt16LE(offset,1);
+  } 
+  
   return header;
 }
 
