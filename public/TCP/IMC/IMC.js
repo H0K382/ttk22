@@ -11,6 +11,7 @@ const {
   netFollowMetadata,
   customCameraMessageMetadata,
   setServoPositionMetadata,
+  estimatedStateMetadata,
   messages,
 } = require('./IMCMetadata');
 
@@ -110,6 +111,7 @@ function encodeLowLevelControlManeuver(
  * @returns {{[key: string]: Object}} Object with IMC message as key (use `messages` to recieve the messages)
  */
 function decode(buf, bigEndian = false) {
+  console.log("Decoding the buf");
   let result = {};
   let offset = 0;
   let msg, name;
@@ -137,6 +139,11 @@ function decodeImcMessage(buf, offset = 0, bigEndian, name = '', hasHeader = tru
   if (hasHeader) {
     const header = decodeHeader(buf, offset, bigEndian);
     id = header.mgid;
+    if (id != 350) {
+      console.log("Header:");
+      console.log(header);
+      
+    }
     offset += HEADER_LENGTH;
   } else {
     if (bigEndian) {
@@ -289,7 +296,9 @@ const idToMessageMetadata = {
   1007: netFollowMetadata,
   1002: customNetFollowStateMetadata,
   1005: customCameraMessageMetadata,
-  302: setServoPositionMetadata
+  302: setServoPositionMetadata,
+  // Messages added for communication with DUNE
+  350: estimatedStateMetadata,
 };
 
 module.exports = { encode, decode, messages };

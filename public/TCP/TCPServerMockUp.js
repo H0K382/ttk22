@@ -156,7 +156,6 @@ const startServer = () => {
         socket.destroy();
         return;
       }
-      console.log(decode(buf));
       Object.keys(recievedData).map((message) => {
         switch (message) {
           case messages.desiredControl:

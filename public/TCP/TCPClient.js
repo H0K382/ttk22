@@ -55,6 +55,7 @@ function getConnectedClient() {
         global.fromROV = data;
         sendData(client, global.toROV);
       } else if (messageProtocol === messageProtocols.IMC) {
+        console.log("Message Protocol IMC");
         const fromROVIMC = decodeImcData(buf);
         if (messages.entityState in fromROVIMC) {
           global.fromROVIMC = fromROVIMC;
@@ -63,11 +64,11 @@ function getConnectedClient() {
         }
       }
     } catch (error) {
-      console.log('Unable to decode message:');
-      console.log(`Buffer: ${buf.toString('hex').match(/../g).join(' ')}`);
-      console.log(`Buffer length: ${buf.length}`);
+      // console.log('Unable to decode message:');
+      // console.log(`Buffer: ${buf.toString('hex').match(/../g).join(' ')}`);
+      // console.log(`Buffer length: ${buf.length}`);
 
-      console.log(error.message);
+      // console.log(error.message);
     }
   });
 
@@ -112,6 +113,8 @@ function sendData(client, data) {
 
 function decodeImcData(buf) {
   const recievedData = decode(buf, false);
+  console.log("Recieved data: ");
+  console.log(recievedData);
 
   // Update mode
   /*
@@ -140,6 +143,18 @@ function decodeImcData(buf) {
       roll: customEstimatedState.phi,
       pitch: customEstimatedState.theta,
       yaw: customEstimatedState.psi,
+    };
+  }
+
+  if (messages.estimatedState in recievedData) {
+    const estimatedState = recievedData[messages.estimatedState];
+    global.fromROV = {
+      north: estimatedState.lat,
+      east: estimatedState.lon,
+      down: estimatedState.depth,
+      roll: estimatedState.phi,
+      pitch: estimatedState.theta,
+      yaw: estimatedState.psi,
     };
   }
 
