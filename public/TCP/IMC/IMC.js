@@ -111,7 +111,6 @@ function encodeLowLevelControlManeuver(
  * @returns {{[key: string]: Object}} Object with IMC message as key (use `messages` to recieve the messages)
  */
 function decode(buf, bigEndian = false) {
-  console.log("Decoding the buf");
   let result = {};
   let offset = 0;
   let msg, name;
@@ -140,8 +139,8 @@ function decodeImcMessage(buf, offset = 0, bigEndian, name = '', hasHeader = tru
     const header = decodeHeader(buf, offset, bigEndian);
     id = header.mgid;
     if (id != 350) {
-      console.log("Header:");
-      console.log(header);
+      // console.log("Header:");
+      // console.log(header);
       
     }
     offset += HEADER_LENGTH;

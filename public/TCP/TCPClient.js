@@ -55,9 +55,8 @@ function getConnectedClient() {
         global.fromROV = data;
         sendData(client, global.toROV);
       } else if (messageProtocol === messageProtocols.IMC) {
-        console.log("Message Protocol IMC");
         const fromROVIMC = decodeImcData(buf);
-        if (messages.entityState in fromROVIMC) {
+        if (messages.entityState in fromROVIMC || messages.estimatedState in fromROVIMC) {
           global.fromROVIMC = fromROVIMC;
           const toROVIMC = sendIMCData(client);
           global.toROVIMC = toROVIMC;
@@ -113,8 +112,7 @@ function sendData(client, data) {
 
 function decodeImcData(buf) {
   const recievedData = decode(buf, false);
-  console.log("Recieved data: ");
-  console.log(recievedData);
+  // console.log(recievedData);
 
   // Update mode
   /*
@@ -149,8 +147,8 @@ function decodeImcData(buf) {
   if (messages.estimatedState in recievedData) {
     const estimatedState = recievedData[messages.estimatedState];
     global.fromROV = {
-      north: estimatedState.lat,
-      east: estimatedState.lon,
+      north: estimatedState.x,
+      east: estimatedState.y,
       down: estimatedState.depth,
       roll: estimatedState.phi,
       pitch: estimatedState.theta,

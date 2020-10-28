@@ -54,6 +54,12 @@ function VideoApp() {
 
   return (
     <div className={transparent ? 'transparentVideoApp' : 'VideoApp'}>
+        <div>
+          North:{sensorValues['north']}
+        </div>
+        <div>
+          East: {sensorValues['east']}
+        </div>
       <VideoMenu
         toggleTransparent={toggleTransparent}
         transparent={transparent}
