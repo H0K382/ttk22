@@ -12,7 +12,9 @@ const {
   customCameraMessageMetadata,
   setServoPositionMetadata,
   estimatedStateMetadata,
+  controlLoopMetadata,
   messages,
+  desiredPathMetadata,
 } = require('./IMCMetadata');
 
 const { HEADER_LENGTH, FOOTER_LENGTH } = require('./constants');
@@ -29,6 +31,7 @@ const encode = {
   customEstimatedState: encodeCustomEstimatedState,
   entityState: encodeEntityState,
   desiredControl: encodeDesiredControl,
+  desiredPath: encodeDesiredPath,
   lowLevelControlManeuver: {
     desiredHeading: encodeLowLevelControlManeuverDesiredHeading,
     desiredZ: encodeLowLevelControlManeuverDesiredZ,
@@ -39,6 +42,7 @@ const encode = {
   customCameraMessage: encodeCustomCameraMessage,
   setServoPosition: encodeSetServoPosition,
   combine: Buffer.concat,
+  controlLoop: encodeControlLoop,
 };
 
 /**
@@ -138,11 +142,11 @@ function decodeImcMessage(buf, offset = 0, bigEndian, name = '', hasHeader = tru
   if (hasHeader) {
     const header = decodeHeader(buf, offset, bigEndian);
     id = header.mgid;
-    if (id != 350) {
-      // console.log("Header:");
-      // console.log(header);
+    // if (id != 38657) {
+    //   console.log("Header:");
+    //   console.log(header);
       
-    }
+    // }
     offset += HEADER_LENGTH;
   } else {
     if (bigEndian) {
@@ -248,8 +252,16 @@ function encodeEntityState(entityState) {
   return encodeImcPackage(entityState, entityStateMetadata);
 }
 
+function encodeControlLoop(controlLoop) {
+  return encodeImcPackage(controlLoop, controlLoopMetadata);
+}
+
 function encodeDesiredControl(desiredControl) {
   return encodeImcPackage(desiredControl, desiredControlMetadata);
+}
+
+function encodeDesiredPath(desiredPath) {
+  return encodeImcPackage(desiredPath, desiredPathMetadata);
 }
 
 function encodeLowLevelControlManeuverDesiredHeading(desiredHeading, duration) {
@@ -298,6 +310,8 @@ const idToMessageMetadata = {
   302: setServoPositionMetadata,
   // Messages added for communication with DUNE
   350: estimatedStateMetadata,
+  507: controlLoopMetadata,
+  406: desiredPathMetadata,
 };
 
 module.exports = { encode, decode, messages };

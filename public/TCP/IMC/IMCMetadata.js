@@ -13,7 +13,8 @@ const messages = {
   customNetFollowState: 'customNetFollowState',
   customCameraMessage: 'customCameraMessage',
   setServoPosition: 'setServoPosition',
-  estimatedState: 'estimatedState'
+  estimatedState: 'estimatedState',
+  controlLoop: 'controlLoop',
 };
 
 const datatypes = {
@@ -92,6 +93,31 @@ const entityStateMetadata = {
       name: 'description',
       datatype: datatypes.uint_16t,
       value: 131072,
+    },
+  ],
+};
+
+const controlLoopMetadata = {
+  // https://www.lsts.pt/docs/imc/imc-5.4.11/Vehicle%20Supervision.html#control-loops
+  name: messages.controlLoop,
+  length: 60,
+  id: {
+    value: 507,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'enable',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'mask',
+      datatype: datatypes.bitfield,
+      fields: ['1']
+    },
+    {
+      name: 'scope_ref',
+      datatype: datatypes.uint_32t,
     },
   ],
 };
@@ -444,6 +470,66 @@ const estimatedStateMetadata = {
   ]
 }
 
+const desiredPathMetadata = {
+  // https://www.lsts.pt/docs/imc/master/Guidance.html#desired-path
+  name: messages.desiredPath,
+  length: 78,
+  id: {
+    value: 406,
+    datatype: datatypes.uint_16t,
+  },
+  message: [
+    {
+      name: 'start_lat',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'start_lon',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'start_z',
+      datatype: datatypes.fp32_t,
+    },
+    {
+      name: 'start_z_units',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'end_lat',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'end_lon',
+      datatype: datatypes.fp64_t,
+    },
+    {
+      name: 'end_z',
+      datatype: datatypes.fp32_t,
+    },
+    {
+      name: 'end_z_units',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'speed',
+      datatype: datatypes.fp32_t,
+    },
+    {
+      name: 'speed_units',
+      datatype: datatypes.uint_8t,
+    },
+    {
+      name: 'lradius',
+      datatype: datatypes.fp32_t,
+    },
+    {
+      name: 'flags',
+      datatype: datatypes.uint_8t,
+    }
+  ]
+}
+
 module.exports = {
   datatypes,
   messages,
@@ -459,4 +545,6 @@ module.exports = {
   customCameraMessageMetadata,
   setServoPositionMetadata,
   estimatedStateMetadata,
+  controlLoopMetadata,
+  desiredPathMetadata,
 };

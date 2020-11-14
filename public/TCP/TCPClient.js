@@ -6,6 +6,9 @@ const { sendMessage } = require('../utils/IPC');
 
 const messageLength = 256;
 
+var today = new Date();
+
+
 const messageProtocols = {
   IMC: 'IMC',
   old: 'OLD',
@@ -59,6 +62,7 @@ function getConnectedClient() {
         if (messages.entityState in fromROVIMC || messages.estimatedState in fromROVIMC) {
           global.fromROVIMC = fromROVIMC;
           const toROVIMC = sendIMCData(client);
+          console.log(toROVIMC);
           global.toROVIMC = toROVIMC;
         }
       }
@@ -111,8 +115,13 @@ function sendData(client, data) {
 }
 
 function decodeImcData(buf) {
-  const recievedData = decode(buf, false);
-  // console.log(recievedData);
+  // try {
+    const recievedData = decode(buf, false);
+    console.log(recievedData);
+  // } catch (error) {
+  //   console.log("TCPCLIENT");
+  //   console.log(error);
+  // }
 
   // Update mode
   /*
@@ -206,23 +215,57 @@ function sendIMCData(client) {
   const { currentMode, manual, dp, nf } = global.mode;
   if (currentMode === manual) {
     // MANUAL MODE
-    const desiredControl = {
-      x: global.toROV.surge,
-      y: global.toROV.sway,
-      z: global.toROV.autodepth ? 0 : global.toROV.heave,
-      k: 0.0,
-      m: global.toROV.pitch,
-      n: global.toROV.autoheading ? 0 : global.toROV.yaw,
-      flags: {
-        x: false,
-        y: false,
-        z: global.toROV.autodepth,
-        k: true,
-        m: true,
-        n: global.toROV.autoheading,
-      },
+
+    // DUNE SPECIFIC
+    // Enable control loop
+    const controlLoop = {
+      enable: currentMode === manual,
+      mask: 1,
+      scope_ref: parseInt(today.getTime()/100000),
+    }
+
+    prebuf = encode.controlLoop(controlLoop);
+    console.log(decode(prebuf, true));
+    client.write(encode.combine([prebuf], messageLength));
+
+    // const desiredControl = {
+    //   x: global.toROV.surge,
+    //   y: global.toROV.sway,
+    //   z: global.toROV.autodepth ? 0 : global.toROV.heave,
+    //   k: 0.0,
+    //   m: global.toROV.pitch,
+    //   n: global.toROV.autoheading ? 0 : global.toROV.yaw,
+    //   flags: {
+    //     x: false,
+    //     y: false,
+    //     z: global.toROV.autodepth,
+    //     k: true,
+    //     m: true,
+    //     n: global.toROV.autoheading,
+    //   },
+    // };
+    
+    // buf = encode.desiredControl(desiredControl);
+
+
+    const desiredPath = {
+      start_lat: 0,
+      start_lon: 0,
+      start_z: 0,
+      start_z_units: 1,
+      end_lat: 1,
+      end_lon: 1,
+      end_z: 0,
+      end_z_units: 1,
+      speed: 2,
+      speed_units: 0,
+      lradius: 1,
+      flags: 255,
     };
-    buf = encode.desiredControl(desiredControl);
+
+    buf = encode.desiredPath(desiredPath);
+
+
 
     if (global.toROV.autodepth) {
       /*eslint-disable */
@@ -280,6 +323,26 @@ function sendIMCData(client) {
       z_units: 0,
     });
   }
+
+  // if (currentMode === desiredPath){
+
+  //   const desiredPath = {
+  //     start_lat: 0,
+  //     start_lon: 0,
+  //     start_z: 0,
+  //     start_z_units: 1,
+  //     end_lat: 10,
+  //     end_lon: 10,
+  //     end_z: 0,
+  //     end_z_units: 1,
+  //     speed: 2,
+  //     speed_units: 1,
+  //     lradius: 2,
+  //     flags: 11111111,
+  //   };
+  //   buf = encode.desiredPath(desiredPath);
+  // }
+  console.log(decode(buf, true));
   client.write(encode.combine([buf], messageLength));
   
   return decode(buf, true);
