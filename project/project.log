@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.8.29)  14 NOV 2020 19:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.8.29)  15 NOV 2020 23:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**/home/henning/Documents/skole/ttk22/project/project.tex
-(/home/henning/Documents/skole/ttk22/project/project.tex
+**/home/henning/Documents/aqueous/project/project.tex
+(/home/henning/Documents/aqueous/project/project.tex
 LaTeX2e <2018-12-01>
 (/usr/local/texlive/2019/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2018/09/03 v1.4i Standard LaTeX document class
@@ -497,7 +497,7 @@ Package caption Info: listings package is loaded.
 Package: subcaption 2018/05/01 v1.1-162 Sub-captions (AR)
 \c@subfigure=\count298
 \c@subtable=\count299
-) (/home/henning/Documents/skole/ttk22/project/project.aux)
+) (/home/henning/Documents/aqueous/project/project.aux)
 \openout1 = `project.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 65.
@@ -631,7 +631,7 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 65.
 LaTeX Info: Redefining \pageref on input line 65.
 LaTeX Info: Redefining \nameref on input line 65.
- (/home/henning/Documents/skole/ttk22/project/project.out) (/home/henning/Documents/skole/ttk22/project/project.out)
+ (/home/henning/Documents/aqueous/project/project.out) (/home/henning/Documents/aqueous/project/project.out)
 \@outlinefile=\write4
 \openout4 = `project.out'.
 
@@ -647,40 +647,80 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<AqHUD.png, id=32, 680.18823pt x 746.79pt>
+Overfull \hbox (0.2772pt too wide) in paragraph at lines 213--215
+\OT1/cmr/m/n/10 For this project, I wanted to see what would be re-quired for SIN-TEF's JavaScript
+ []
+
+<AqHUD.png, id=84, 680.18823pt x 746.79pt>
 File: AqHUD.png Graphic file (type png)
 <use AqHUD.png>
-Package pdftex.def Info: AqHUD.png  used on input line 223.
+Package pdftex.def Info: AqHUD.png  used on input line 225.
 (pdftex.def)             Requested size: 258.75pt x 284.0908pt.
-<AqControl.png, id=33, 680.18823pt x 746.79pt>
+[2]
+<AqControl.png, id=90, 680.18823pt x 746.79pt>
 File: AqControl.png Graphic file (type png)
 <use AqControl.png>
-Package pdftex.def Info: AqControl.png  used on input line 230.
+Package pdftex.def Info: AqControl.png  used on input line 232.
 (pdftex.def)             Requested size: 345.0pt x 378.79535pt.
- [2 </home/henning/Documents/skole/ttk22/project/AqHUD.png (PNG copy)>] [3 </home/henning/Documents/skole/ttk22/project/AqControl.png (PNG copy)>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 251.
- [4]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 251.
- (/home/henning/Documents/skole/ttk22/project/project.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 251.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 251.
+ [3 </home/henning/Documents/aqueous/project/AqHUD.png (PNG copy)>] [4 </home/henning/Documents/aqueous/project/AqControl.png (PNG copy)>] [5]
+<AqHUDConnected.png, id=111, 925.056pt x 1019.4888pt>
+File: AqHUDConnected.png Graphic file (type png)
+<use AqHUDConnected.png>
+Package pdftex.def Info: AqHUDConnected.png  used on input line 296.
+(pdftex.def)             Requested size: 345.0pt x 380.22284pt.
+<AqControlConnected.png, id=112, 923.1288pt x 1020.4524pt>
+File: AqControlConnected.png Graphic file (type png)
+<use AqControlConnected.png>
+Package pdftex.def Info: AqControlConnected.png  used on input line 302.
+(pdftex.def)             Requested size: 345.0pt x 381.36076pt.
+ [6] [7 </home/henning/Documents/aqueous/project/AqHUDConnected.png (PNG copy)>] [8 </home/henning/Documents/aqueous/project/AqControlConnected.png (PNG copy)>]
+Underfull \hbox (badness 10000) in paragraph at lines 319--335
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 319--335
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 319--335
+
+ []
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2019/02/27 1.8b listings language file
+) (/home/henning/Documents/aqueous/project/estimatedStateMetadata.js
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 1.
+ (/usr/local/texlive/2019/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1.
+ [9] [10]) [11] (/home/henning/Documents/aqueous/project/saveData.js) (/home/henning/Documents/aqueous/project/clMetadata.js) (/home/henning/Documents/aqueous/project/clPop.js)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 356.
+ [12]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 356.
+ (/home/henning/Documents/aqueous/project/project.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 356.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 356.
 Package rerunfilecheck Info: File `project.out' has not changed.
-(rerunfilecheck)             Checksum: CE846FB30B51F460A1D91DA05C7A4E09;260.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 251.
+(rerunfilecheck)             Checksum: 3B00EB0A01DB68D2E1714A76EAB76C1B;1250.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 356.
  ) 
 Here is how much of TeX's memory you used:
- 21393 strings out of 492609
- 400622 string characters out of 6129033
- 447322 words of memory out of 5000000
- 25153 multiletter control sequences out of 15000+600000
- 543022 words of font info for 67 fonts, out of 8000000 for 9000
+ 21988 strings out of 492609
+ 407520 string characters out of 6129033
+ 788909 words of memory out of 5000000
+ 25569 multiletter control sequences out of 15000+600000
+ 542714 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 40i,6n,63p,271b,721s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on /home/henning/Documents/skole/ttk22/project/project.pdf (4 pages, 162097 bytes).
+ 40i,6n,63p,332b,2359s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on /home/henning/Documents/aqueous/project/project.pdf (12 pages, 314402 bytes).
 PDF statistics:
- 72 PDF objects out of 1000 (max. 8388607)
- 58 compressed objects within 1 object stream
- 12 named destinations out of 1000 (max. 500000)
- 51 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 346 PDF objects out of 1000 (max. 8388607)
+ 317 compressed objects within 4 object streams
+ 170 named destinations out of 1000 (max. 500000)
+ 165 words of extra memory for PDF output out of 10000 (max. 10000000)
 

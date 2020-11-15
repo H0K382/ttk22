@@ -228,42 +228,42 @@ function sendIMCData(client) {
     console.log(decode(prebuf, true));
     client.write(encode.combine([prebuf], messageLength));
 
-    // const desiredControl = {
-    //   x: global.toROV.surge,
-    //   y: global.toROV.sway,
-    //   z: global.toROV.autodepth ? 0 : global.toROV.heave,
-    //   k: 0.0,
-    //   m: global.toROV.pitch,
-    //   n: global.toROV.autoheading ? 0 : global.toROV.yaw,
-    //   flags: {
-    //     x: false,
-    //     y: false,
-    //     z: global.toROV.autodepth,
-    //     k: true,
-    //     m: true,
-    //     n: global.toROV.autoheading,
-    //   },
-    // };
-    
-    // buf = encode.desiredControl(desiredControl);
-
-
-    const desiredPath = {
-      start_lat: 0,
-      start_lon: 0,
-      start_z: 0,
-      start_z_units: 1,
-      end_lat: 1,
-      end_lon: 1,
-      end_z: 0,
-      end_z_units: 1,
-      speed: 2,
-      speed_units: 0,
-      lradius: 1,
-      flags: 255,
+    const desiredControl = {
+      x: global.toROV.surge,
+      y: global.toROV.sway,
+      z: global.toROV.autodepth ? 0 : global.toROV.heave,
+      k: 0.0,
+      m: global.toROV.pitch,
+      n: global.toROV.autoheading ? 0 : global.toROV.yaw,
+      flags: {
+        x: false,
+        y: false,
+        z: global.toROV.autodepth,
+        k: true,
+        m: true,
+        n: global.toROV.autoheading,
+      },
     };
+    
+    buf = encode.desiredControl(desiredControl);
 
-    buf = encode.desiredPath(desiredPath);
+
+    // const desiredPath = {
+    //   start_lat: 0,
+    //   start_lon: 0,
+    //   start_z: 0,
+    //   start_z_units: 1,
+    //   end_lat: 1,
+    //   end_lon: 1,
+    //   end_z: 0,
+    //   end_z_units: 1,
+    //   speed: 2,
+    //   speed_units: 0,
+    //   lradius: 1,
+    //   flags: 255,
+    // };
+
+    // buf = encode.desiredPath(desiredPath);
 
 
 

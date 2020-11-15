@@ -4,6 +4,8 @@
 
 _The project is a part of the course TDT4290 Customer driven project in the autumn of 2019._
 
+_It has since been altered by SINTEF and in the project in TTK22._
+
 ![GIF of the finished product in x4 speed](assets/demo/aqueous_demo_4x.gif)
 _Animation of the finished product in x4 speed_
 
@@ -49,8 +51,8 @@ brew install yarn
 First, you need to clone this repository using Git:
 
 ```
-git clone https://github.com/eirikdahlen/TDT4290_Aqueous.git
-cd TDT4290_Aqueous
+git clone git@github.com:H0K382/ttk22.git
+cd Aqueous
 ```
 
 Then run these commands from your shell/terminal:
@@ -59,6 +61,11 @@ Then run these commands from your shell/terminal:
 yarn install # installs all dependencies
 yarn electron-dev # starts development server and runs the project
 ```
+
+## Running With DUNE
+
+To run Aqueous with DUNE start both DUNE and Aqueous and make sure that the TCP port in Aqueous points to the TCP port which DUNE is listening on.
+Then connect to TCP with Ctrl + T
 
 ## Packaging
 

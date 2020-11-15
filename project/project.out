@@ -1,5 +1,18 @@
 \BOOKMARK [1][-]{section.1}{Approach}{}% 1
 \BOOKMARK [2][-]{subsection.1.1}{Aqueous}{section.1}% 2
-\BOOKMARK [3][-]{subsubsection.1.1.1}{Communcations}{subsection.1.1}% 3
-\BOOKMARK [1][-]{section.2}{Organization}{}% 4
-\BOOKMARK [1][-]{section.3}{Results}{}% 5
+\BOOKMARK [2][-]{subsection.1.2}{Existing Communcations}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Receiving Messages from DUNE}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{Sending Messages to DUNE}{section.1}% 5
+\BOOKMARK [1][-]{section.2}{Organization}{}% 6
+\BOOKMARK [2][-]{subsection.2.1}{Decoding and Handling Estimated State}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.2}{Sending Desired Control and Debugging from DUNE}{section.2}% 8
+\BOOKMARK [2][-]{subsection.2.3}{Sending the Control Loop Message}{section.2}% 9
+\BOOKMARK [1][-]{section.3}{Results}{}% 10
+\BOOKMARK [2][-]{subsection.3.1}{DUNE to Aqueous}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.2}{Aqueous to DUNE}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.3}{General}{section.3}% 13
+\BOOKMARK [1][-]{section.4}{Appendix}{}% 14
+\BOOKMARK [2][-]{subsection.4.1}{Estimated State Metadata Data Structure}{section.4}% 15
+\BOOKMARK [2][-]{subsection.4.2}{Saving Estimated State Data}{section.4}% 16
+\BOOKMARK [2][-]{subsection.4.3}{Control Loop Metadata Data Structure}{section.4}% 17
+\BOOKMARK [2][-]{subsection.4.4}{Populating the Control Loop object with data}{section.4}% 18
